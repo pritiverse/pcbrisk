@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PCBRisk — Human-Centered Risk-Calibrated AOI Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#eff6ff', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #070a13; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    .badge-glow-red { box-shadow: 0 0 16px rgba(239, 68, 68, 0.5); }
+    .badge-glow-yellow { box-shadow: 0 0 16px rgba(245, 158, 11, 0.5); }
+    .badge-glow-green { box-shadow: 0 0 16px rgba(16, 185, 129, 0.5); }
+    .pixelated { image-rendering: pixelated; image-rendering: -moz-crisp-edges; }
+    .sidebar-collapsed { width: 4.5rem !important; }
+    .sidebar-collapsed .sidebar-label { display: none !important; }
+    .sidebar-collapsed .sidebar-header { justify-content: center !important; padding: 0.5rem !important; }
+    .sidebar-collapsed .sidebar-footer { display: none !important; }
+    @keyframes slideIn {
+      from { transform: translateX(110%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .toast-anim { animation: slideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 0.3; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .hud-pulse { animation: pulseRing 2s infinite ease-in-out; }
+  </style>
+</head>
+<body class="h-full flex overflow-hidden font-sans text-slate-100 antialiased bg-slate-950">
+
+  <!-- ================= 1. TOAST NOTIFICATION CONTAINER (WITH UNDO) ================= -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- ================= 2. COLLAPSIBLE SLIM SIDEBAR ================= -->
+  <aside id="main-sidebar" class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0 select-none z-30 transition-all duration-200">
+    <div class="flex flex-col">
+      <!-- Brand Title Header -->
+      <div class="h-16 px-4 border-b border-slate-800 flex items-center justify-between sidebar-header">
+        <div class="flex items-center gap-3 overflow-hidden">
+          <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 text-white flex items-center justify-center shrink-0 shadow-md">
+            <span class="material-symbols-outlined text-xl">memory</span>
+          </div>
+          <div class="flex flex-col min-w-0 sidebar-label">
+            <span class="font-bold text-white text-sm tracking-tight truncate leading-tight">PCBRisk AOI</span>
+            <span class="text-[10px] text-blue-400 font-mono font-medium truncate">Human-Centered Station</span>
+          </div>
+        </div>
+        <button onclick="toggleSidebar()" title="Collapse / Expand Sidebar" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+          <span id="sidebar-toggle-icon" class="material-symbols-outlined text-lg">menu_open</span>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="p-2 space-y-1" id="nav-tabs">
+        <button onclick="switchView('overview')" id="nav-overview" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600/20 text-blue-400 font-semibold text-sm transition-all text-left border border-blue-500/30" title="Overview Dashboard">
+          <span class="material-symbols-outlined text-[20px] shrink-0">dashboard</span>
+          <span class="sidebar-label truncate">Overview</span>
+        </button>
+
+        <button onclick="switchView('workspace')" id="nav-workspace" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition-all text-left" title="Live Inspection Workspace">
+          <span class="material-symbols-outlined text-[20px] shrink-0">biotech</span>
+          <span class="sidebar-label truncate">Inspect PCB</span>
+        </button>
+
+        <button onclick="switchView('results')" id="nav-results" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition-all text-left" title="Inspection Queues">
+          <span class="material-symbols-outlined text-[20px] shrink-0">checklist</span>
+          <span class="sidebar-label truncate">Inspection Queues</span>
+        </button>
+
+        <button onclick="switchView('evaluation')" id="nav-evaluation" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition-all text-left" title="Model Evaluation Ledgers">
+          <span class="material-symbols-outlined text-[20px] shrink-0">analytics</span>
+          <span class="sidebar-label truncate">Model Evaluation</span>
+        </button>
+
+        <button onclick="switchView('history')" id="nav-history" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition-all text-left" title="MES History & Audit Log">
+          <span class="material-symbols-outlined text-[20px] shrink-0">history</span>
+          <span class="sidebar-label truncate">History Log</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Bottom Audio & Hotkey Bar -->
+    <div class="p-3 border-t border-slate-800 bg-slate-900/60 sidebar-footer">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[10px] font-mono text-slate-400">STATION STATUS</span>
+        <span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-mono font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">CONNECTED</span>
+      </div>
+      
+      <div class="flex items-center justify-between text-xs text-slate-300 font-mono mb-2">
+        <span class="text-[11px] text-slate-400">Audio Feedback:</span>
+        <button onclick="toggleAudio()" id="btn-audio-toggle" class="p-1 rounded bg-slate-800 hover:bg-slate-700 text-emerald-400 transition-colors" title="Toggle Synthesized Auditory Earcons">
+          <span id="audio-icon" class="material-symbols-outlined text-sm">volume_up</span>
+        </button>
+      </div>
+
+      <button onclick="openHotkeysModal()" class="w-full py-1.5 px-2 text-[10px] font-mono bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 flex items-center justify-center gap-1.5 transition-colors">
+        <span class="material-symbols-outlined text-xs text-purple-400">keyboard</span>
+        <span>Keyboard Hotkeys (?)</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= 3. MAIN WORKSPACE CONTAINER ================= -->
+  <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-slate-950">
+
+    <!-- VIEW A: OVERVIEW DASHBOARD -->
+    <div id="view-overview" class="flex-1 flex flex-col overflow-y-auto">
+      <header class="h-16 bg-slate-900 border-b border-slate-800 px-8 flex items-center justify-between shrink-0">
+        <div>
+          <h1 class="text-lg font-bold text-white tracking-tight">System Overview & Operational KPIs</h1>
+          <p class="text-xs text-slate-400 font-medium">Risk-Calibrated Conformal Triage for Printed Circuit Board AOI</p>
+        </div>
+        <button onclick="switchView('workspace')" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-base">play_arrow</span>
+          Launch Inspection
+        </button>
+      </header>
+
+      <main class="p-8 space-y-6">
+        <!-- 4 Primary KPI Metrics -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 shadow-sm">
+            <div class="flex items-center justify-between text-slate-400 mb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Human Workload Reduction</span>
+              <span class="material-symbols-outlined text-blue-400">trending_down</span>
+            </div>
+            <div class="text-3xl font-extrabold text-blue-400 font-mono tracking-tight">-34.18%</div>
+            <p class="text-[11px] text-slate-400 mt-1">From $6.37 \to 4.19$ flags/img vs raw conf triage ($\alpha=0.05$)</p>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 shadow-sm">
+            <div class="flex items-center justify-between text-slate-400 mb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Target Escape Ceiling (&alpha;)</span>
+              <span class="material-symbols-outlined text-emerald-400">verified_user</span>
+            </div>
+            <div class="text-3xl font-extrabold text-emerald-400 font-mono tracking-tight">&le; 5.0%</div>
+            <p class="text-[11px] text-slate-400 mt-1">Split-conformal finite-sample safety bound</p>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 shadow-sm">
+            <div class="flex items-center justify-between text-slate-400 mb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Topology Query Latency</span>
+              <span class="material-symbols-outlined text-purple-400">speed</span>
+            </div>
+            <div class="text-3xl font-extrabold text-purple-400 font-mono tracking-tight">186 &mu;s</div>
+            <p class="text-[11px] text-slate-400 mt-1">Local consequence check ($5,390\text{ queries/s}$ on CPU)</p>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 shadow-sm">
+            <div class="flex items-center justify-between text-slate-400 mb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Break-Even Ratio ($R^*$)</span>
+              <span class="material-symbols-outlined text-amber-400">account_balance</span>
+            </div>
+            <div class="text-3xl font-extrabold text-amber-400 font-mono tracking-tight">1,203.07</div>
+            <p class="text-[11px] text-slate-400 mt-1">Policy B preferred when $R = C_{\text{escape}} / C_{\text{review}} < 1,203$</p>
+          </div>
+        </section>
+
+        <!-- Two Column Architecture & Queues Overview -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-6">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-blue-400 text-lg">schema</span>
+              Calibrated Triage Priority Queues
+            </h2>
+            <div class="space-y-4">
+              <div class="p-3.5 rounded-lg bg-red-950/40 border border-red-800/60 flex items-start gap-3">
+                <span class="w-3 h-3 rounded-full bg-red-500 mt-1 shrink-0 badge-glow-red"></span>
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-xs text-red-400 font-mono">RED QUEUE (Critical Functional Defect, s &ge; &tau;)</span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-red-900/60 text-red-200">Manual Review</span>
+                  </div>
+                  <p class="text-xs text-slate-300 mt-1">Trace opens and net bridges confirmed by topological differential graph. Halts conveyor for immediate visual disposition.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-lg bg-amber-950/40 border border-amber-800/60 flex items-start gap-3">
+                <span class="w-3 h-3 rounded-full bg-amber-500 mt-1 shrink-0 badge-glow-yellow"></span>
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-xs text-amber-400 font-mono">YELLOW QUEUE (Boundary Uncertainty, &tau; - &epsilon; &le; s < &tau;)</span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-900/60 text-amber-200">Auto Flying Probe</span>
+                  </div>
+                  <p class="text-xs text-slate-300 mt-1">Marginal optical evidence near calibration threshold. Auto-routed to 4-point flying probe electrical testing or active learning telemetry.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-lg bg-emerald-950/40 border border-emerald-800/60 flex items-start gap-3">
+                <span class="w-3 h-3 rounded-full bg-emerald-500 mt-1 shrink-0 badge-glow-green"></span>
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-xs text-emerald-400 font-mono">GREEN QUEUE (Bypassed Cosmetic Flaw, s < &tau; - &epsilon;)</span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-200">Auto Cleared</span>
+                  </div>
+                  <p class="text-xs text-slate-300 mt-1">Minor pin-holes, mousebites, and non-functional copper spurs. Cleared automatically without stopping the manufacturing conveyor.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 flex flex-col justify-between">
+            <div>
+              <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-purple-400 text-lg">hardware</span>
+                Production Line Hardware Latency
+              </h2>
+              <div class="space-y-3 font-mono text-xs">
+                <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                  <span class="text-slate-400">YOLO11n ONNX Inference (640x640)</span>
+                  <span class="text-white font-bold">52.03 ms (19.2 FPS)</span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                  <span class="text-slate-400">Full-Frame Otsu + Net Labeling</span>
+                  <span class="text-white font-bold">41.85 ms (23.9 FPS)</span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                  <span class="text-slate-400">Consequence Query / Candidate Box</span>
+                  <span class="text-blue-400 font-bold">186 &mu;s (5,390 q/s)</span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-slate-800">
+                  <span class="text-slate-400">End-to-End Board (15.45 Boxes)</span>
+                  <span class="text-emerald-400 font-bold">96.75 ms (10.3 FPS)</span>
+                </div>
+                <div class="flex justify-between items-center py-2">
+                  <span class="text-slate-400">Vector CAD R-Tree Spatial Query</span>
+                  <span class="text-amber-400 font-bold">9.15 &mu;s (&gt;109,000 q/s)</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-3 bg-slate-950/80 rounded-lg border border-slate-800 text-[11px] text-slate-400 mt-4">
+              <span class="text-amber-400 font-bold font-mono">NOTICE:</span> Optical AOI operates at 2D surface level. Final multi-layer continuity testing requires Bare-Board Electrical Testing (FPT / Bed-of-Nails).
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- VIEW B: INSPECTION WORKSPACE -->
+    <div id="view-workspace" class="flex-1 flex flex-col hidden overflow-hidden">
+      <!-- Toolbar -->
+      <header class="h-14 bg-slate-900 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 z-20 gap-3">
+        <!-- Left: Sample Board Selector & Upload -->
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono text-slate-400 hidden sm:inline">Board:</span>
+          <select id="sample-select" onchange="loadSelectedSample()" class="bg-slate-800 text-white text-xs font-mono rounded-lg border border-slate-700 px-2.5 py-1.5 focus:outline-none focus:border-blue-500 max-w-xs truncate">
+            <option value="12300060">12300060 (Board 12300 - Real Trace Open + Mousebites)</option>
+            <option value="12300061">12300061 (Board 12300 - Open Circuit + Pin-Hole)</option>
+            <option value="00041143">00041143 (Board 00041 - High-Difficulty Trace Spurs)</option>
+            <option value="20085127">20085127 (Board 20085 - Solder Mask Drift + Short)</option>
+            <option value="12100002">12100002 (Grouptest - Multi-Pad Reference Layout)</option>
+            <option value="50600029">50600029 (Board 50600 - Wide Bus Bar Copper Spur)</option>
+          </select>
+          <button onclick="openUploadModal()" title="Upload Custom PCB Image Pair" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono rounded-lg border border-slate-700 flex items-center gap-1.5 transition-colors">
+            <span class="material-symbols-outlined text-sm text-blue-400">upload_file</span>
+            <span class="hidden md:inline">Upload Pair</span>
+          </button>
+        </div>
+
+        <!-- Center: Quality Escape Ceiling & Real-Time Dynamic Re-Thresholding -->
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700" title="Direct Manipulation: Drag to see real-time queue shifts without server re-run">
+            <span class="text-[11px] font-mono text-slate-400">Escape Ceiling (&alpha;):</span>
+            <input type="range" id="alpha-slider" min="0.01" max="0.10" step="0.01" value="0.05" oninput="handleRealtimeAlphaChange(this.value)" class="w-16 sm:w-20 accent-blue-500 cursor-ew-resize"/>
+            <span id="alpha-label" class="text-xs font-mono font-bold text-blue-400">0.05</span>
+          </div>
+
+          <div class="hidden lg:flex items-center gap-1 bg-slate-800/80 p-0.5 rounded-lg border border-slate-700 text-[10px] font-mono">
+            <button onclick="setAlphaPreset(0.02)" id="preset-ipc3" class="px-2 py-0.5 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" title="IPC Class 3: Aerospace/Medical (2% Escape Ceiling)">IPC-3 (0.02)</button>
+            <button onclick="setAlphaPreset(0.05)" id="preset-ipc2" class="px-2 py-0.5 rounded bg-blue-600/30 text-blue-300 font-bold" title="IPC Class 2: Industrial Standard (5% Escape Ceiling)">IPC-2 (0.05)</button>
+            <button onclick="setAlphaPreset(0.10)" id="preset-screen" class="px-2 py-0.5 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" title="Screening: High-Throughput Draft (10% Escape Ceiling)">Screen (0.10)</button>
+          </div>
+
+          <div class="hidden xl:flex items-center gap-2 bg-slate-800/80 px-2 py-1 rounded-lg border border-slate-700">
+            <span class="text-[11px] font-mono text-slate-400">Calibrator:</span>
+            <select id="calibrator-select" onchange="handleRealtimeCalibratorChange(this.value)" class="bg-transparent text-white text-xs font-mono focus:outline-none cursor-pointer">
+              <option value="pooled">pooled (Default)</option>
+              <option value="shift-inflated">shift-inflated</option>
+              <option value="worst-board">worst-board</option>
+              <option value="board-median">board-median</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Right: Actions -->
+        <div class="flex items-center gap-2">
+          <button onclick="executeInspection()" id="btn-inspect" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg shadow transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">play_arrow</span>
+            <span>Run Inspection (Enter)</span>
+          </button>
+          <button onclick="exportAuditReport()" title="Export Inspection Dossier to CSV/JSON" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition-colors">
+            <span class="material-symbols-outlined text-base text-emerald-400">download</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Split Layout: Canvas Viewport (Left) & Consequence Dossier (Right) -->
+      <div class="flex-1 flex overflow-hidden">
+        <!-- Interactive Canvas Stage -->
+        <div class="flex-1 bg-slate-950 flex flex-col overflow-hidden relative">
+          <!-- Timing Bar & Display Modes -->
+          <div id="timing-bar" class="h-9 bg-slate-900/90 border-b border-slate-800 px-4 flex items-center justify-between text-[11px] font-mono text-slate-400 shrink-0">
+            <div id="timing-status" class="truncate max-w-md">Ready. Select board or press Enter to inspect.</div>
+            
+            <!-- Optical Display Mode Tabs -->
+            <div class="flex items-center gap-1 bg-slate-950 px-1 py-0.5 rounded border border-slate-800 text-[10px]">
+              <button onclick="setDisplayMode('annotated')" id="mode-annotated" class="px-2 py-0.5 rounded bg-blue-600 text-white font-bold transition-all">Annotated</button>
+              <button onclick="setDisplayMode('raw_test')" id="mode-raw_test" class="px-2 py-0.5 rounded text-slate-400 hover:text-white transition-all">Raw Test</button>
+              <button onclick="setDisplayMode('template')" id="mode-template" class="px-2 py-0.5 rounded text-slate-400 hover:text-white transition-all" title="Toggle Golden Template (HotKey: T)">Template (T)</button>
+              <button onclick="setDisplayMode('split')" id="mode-split" class="px-2 py-0.5 rounded text-slate-400 hover:text-white transition-all" title="Side-by-Side Comparison">Split (A/B)</button>
+            </div>
+
+            <div id="timing-metrics" class="hidden sm:flex gap-3 text-[10px]"></div>
+          </div>
+
+          <!-- Interactive Viewport Stage -->
+          <div id="viewport-stage" class="flex-1 overflow-hidden relative select-none cursor-grab active:cursor-grabbing bg-[#050811] flex items-center justify-center">
+            
+            <!-- Spatial Grid HUD Indicator (Top Left of Canvas) -->
+            <div id="hud-coordinates" class="absolute top-3 left-3 z-20 bg-slate-900/85 backdrop-blur border border-slate-800 px-2.5 py-1 rounded text-[10px] font-mono text-slate-400 flex items-center gap-2 pointer-events-none">
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping"></span>
+              <span id="hud-grid-text">GRID: SECTOR B-2 | ZOOM: 1.0&times;</span>
+            </div>
+
+            <!-- Floating Zoom & Pan Controls (Top Right of Canvas) -->
+            <div class="absolute top-3 right-3 z-20 flex flex-col gap-1.5 bg-slate-900/90 backdrop-blur border border-slate-800 p-1.5 rounded-lg shadow-xl text-slate-300">
+              <button onclick="zoomBy(1.25)" title="Zoom In (+)" class="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-800 hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-sm">zoom_in</span>
+              </button>
+              <button onclick="zoomBy(0.8)" title="Zoom Out (-)" class="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-800 hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-sm">zoom_out</span>
+              </button>
+              <button onclick="resetZoom()" title="Reset Zoom to Fit (Z)" class="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-800 hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-sm">fit_screen</span>
+              </button>
+              <button onclick="setZoom(1.0)" title="1:1 Native Pixel Scale" class="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-800 hover:text-white text-[10px] font-mono font-bold transition-colors">
+                1:1
+              </button>
+            </div>
+
+            <!-- Minimap Navigation Radar (Bottom Left of Canvas) -->
+            <div id="minimap-container" class="absolute bottom-3 left-3 z-20 w-28 h-28 bg-slate-900/80 border border-slate-700/80 rounded-lg overflow-hidden shadow-2xl backdrop-blur hidden pointer-events-none">
+              <canvas id="minimap-canvas" width="112" height="112" class="w-full h-full block"></canvas>
+              <div id="minimap-viewport-rect" class="absolute border border-blue-400 bg-blue-500/20 pointer-events-none"></div>
+            </div>
+
+            <!-- Transformable Canvas Container -->
+            <div id="canvas-transform-wrapper" class="relative origin-center transition-transform duration-75" style="transform: translate(0px, 0px) scale(1);">
+              <canvas id="main-viewport-canvas" width="640" height="640" class="block rounded shadow-2xl bg-black border border-slate-800"></canvas>
+            </div>
+
+            <!-- Floating Defect Tooltip on Canvas Hover -->
+            <div id="canvas-box-tooltip" class="absolute z-30 pointer-events-none hidden bg-slate-900/95 border border-slate-700 text-xs px-2.5 py-1.5 rounded-lg shadow-xl font-mono backdrop-blur">
+              <div id="tooltip-title" class="font-bold text-white">Defect</div>
+              <div id="tooltip-desc" class="text-[10px] text-slate-300">Click to view consequence dossier</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Defect Analysis & Queue Breakdown (Right Sidebar w-96) -->
+        <aside class="w-96 bg-slate-900 border-l border-slate-800 flex flex-col justify-between shrink-0 h-full overflow-hidden z-10">
+          <div class="p-3.5 border-b border-slate-800 bg-slate-900/90 shrink-0">
+            <div class="flex items-center justify-between mb-2">
+              <h2 class="text-xs font-bold uppercase tracking-wider text-white">Inspection Findings</h2>
+              <span id="findings-count" class="text-xs font-mono text-blue-400 font-semibold">0 Detected</span>
+            </div>
+            <!-- Queue Badges with Instant Filter -->
+            <div class="flex items-center gap-1.5 font-mono text-[10px]">
+              <button onclick="filterQueueList('ALL')" id="filter-all" class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-bold">All</button>
+              <button onclick="filterQueueList('RED')" id="badge-red" class="px-2 py-0.5 rounded bg-red-950 text-red-400 border border-red-800 font-bold hover:bg-red-900/40">0 Red</button>
+              <button onclick="filterQueueList('YELLOW')" id="badge-yellow" class="px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800 font-bold hover:bg-amber-900/40">0 Yellow</button>
+              <button onclick="filterQueueList('GREEN')" id="badge-green" class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold hover:bg-emerald-900/40">0 Green</button>
+            </div>
+          </div>
+
+          <!-- Scrollable Defect List -->
+          <div id="defect-list" class="flex-1 overflow-y-auto p-3 space-y-2">
+            <div class="text-center py-12 text-slate-500 text-xs font-mono">
+              No active inspection results.<br/>Click "Run Inspection" or press <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Enter</kbd>.
+            </div>
+          </div>
+
+          <!-- Clean Semantic Dossier & Tactile Fitts' Law Action Cards -->
+          <div id="selected-dossier" class="p-3.5 border-t border-slate-800 bg-slate-950/95 text-xs font-mono shrink-0 max-h-[52%] overflow-y-auto">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Topological Dossier</span>
+              <span class="text-[10px] text-slate-500">Defect Magnifier</span>
+            </div>
+            
+            <div id="dossier-content" class="text-slate-400 text-[11px]">
+              Select any candidate defect on the image canvas or list above to inspect electrical net consequences.
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- VIEW C: INSPECTION QUEUES & RESULTS -->
+    <div id="view-results" class="flex-1 flex flex-col hidden overflow-y-auto">
+      <header class="h-16 bg-slate-900 border-b border-slate-800 px-8 flex items-center justify-between shrink-0">
+        <div>
+          <h1 class="text-lg font-bold text-white tracking-tight">Triage Disposition & SMT Line Queues</h1>
+          <p class="text-xs text-slate-400 font-medium">Categorized candidate defect bounding boxes across conformal risk queues</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="dispositionAllInQueue('RED', 'REJECT')" class="px-3 py-1.5 bg-red-950 border border-red-800 text-red-300 text-xs font-mono font-bold rounded hover:bg-red-900 transition-colors">
+            Reject All Red
+          </button>
+          <button onclick="dispositionAllInQueue('YELLOW', 'SEND_TO_FPT')" class="px-3 py-1.5 bg-amber-950 border border-amber-800 text-amber-300 text-xs font-mono font-bold rounded hover:bg-amber-900 transition-colors">
+            Route Yellow to FPT
+          </button>
+        </div>
+      </header>
+
+      <main class="p-8 space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-lg">
+          <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center">
+            <span class="text-xs font-bold uppercase tracking-wider text-white">Current Board Triage Breakdown</span>
+            <span id="results-board-id" class="text-xs font-mono text-blue-400">Board: 12300060</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+                <tr>
+                  <th class="px-4 py-3">Queue</th>
+                  <th class="px-4 py-3">Class</th>
+                  <th class="px-4 py-3">Confidence</th>
+                  <th class="px-4 py-3">Topological Split</th>
+                  <th class="px-4 py-3">Bridge (Short)</th>
+                  <th class="px-4 py-3">Risk Score / &tau;</th>
+                  <th class="px-4 py-3">Assigned Action</th>
+                  <th class="px-4 py-3">Operator Disposition</th>
+                </tr>
+              </thead>
+              <tbody id="results-table-body" class="divide-y divide-slate-800/60 text-slate-300">
+                <tr>
+                  <td colspan="8" class="px-4 py-8 text-center text-slate-500">
+                    No inspection performed yet. Navigate to "Inspect PCB" and click "Run Inspection".
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- VIEW D: MODEL EVALUATION & SCIENTIFIC BENCHMARKS -->
+    <div id="view-evaluation" class="flex-1 flex flex-col hidden overflow-y-auto">
+      <header class="h-16 bg-slate-900 border-b border-slate-800 px-8 flex items-center justify-between shrink-0">
+        <div>
+          <h1 class="text-lg font-bold text-white tracking-tight">Model Evaluation & Scientific Replication</h1>
+          <p class="text-xs text-slate-400 font-medium">Leave-One-Board-Out (LOBO) 11-Board Conformal Validation Ledgers</p>
+        </div>
+      </header>
+
+      <main class="p-8 space-y-6">
+        <!-- Headline Empirical Summary Table -->
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 shadow-md">
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-3">LOBO Replication Table (3 Detector Seeds @ &alpha;=0.05)</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="bg-slate-950 text-slate-400 text-[10px] uppercase border-b border-slate-800">
+                <tr>
+                  <th class="px-3 py-2.5">Calibrator</th>
+                  <th class="px-3 py-2.5">Policy A0 Load</th>
+                  <th class="px-3 py-2.5">Policy A Load</th>
+                  <th class="px-3 py-2.5">Policy B Load</th>
+                  <th class="px-3 py-2.5">Load Red. vs A0</th>
+                  <th class="px-3 py-2.5">Load Red. vs A</th>
+                  <th class="px-3 py-2.5">Bootstrap 95% CI</th>
+                  <th class="px-3 py-2.5">Per-Seed &Delta;Load (42, 43, 44)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 text-slate-300">
+                <tr class="bg-blue-950/20 font-semibold">
+                  <td class="px-3 py-2.5 text-blue-400 font-bold">pooled</td>
+                  <td class="px-3 py-2.5">6.37</td>
+                  <td class="px-3 py-2.5">5.71</td>
+                  <td class="px-3 py-2.5 text-emerald-400 font-bold">4.19</td>
+                  <td class="px-3 py-2.5 text-emerald-400 font-bold">-34.18%</td>
+                  <td class="px-3 py-2.5 text-emerald-400">-26.83%</td>
+                  <td class="px-3 py-2.5">[-2.67, -0.48]</td>
+                  <td class="px-3 py-2.5">[-1.79, -0.89, -1.87] (3/3)</td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2.5 text-slate-400">shift-inflated</td>
+                  <td class="px-3 py-2.5">8.92</td>
+                  <td class="px-3 py-2.5">8.85</td>
+                  <td class="px-3 py-2.5 text-emerald-400 font-bold">7.54</td>
+                  <td class="px-3 py-2.5 text-emerald-400">-15.55%</td>
+                  <td class="px-3 py-2.5 text-emerald-400">-16.44%</td>
+                  <td class="px-3 py-2.5">[-3.23, -0.35]</td>
+                  <td class="px-3 py-2.5">[-2.54, -0.37, -1.36] (3/3)</td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2.5 text-slate-400">worst-board</td>
+                  <td class="px-3 py-2.5">12.10</td>
+                  <td class="px-3 py-2.5">9.96</td>
+                  <td class="px-3 py-2.5 text-emerald-400 font-bold">8.09</td>
+                  <td class="px-3 py-2.5 text-emerald-400">-33.14%</td>
+                  <td class="px-3 py-2.5 text-emerald-400">-20.02%</td>
+                  <td class="px-3 py-2.5">[-3.72, -0.61]</td>
+                  <td class="px-3 py-2.5">[-3.41, -1.00, -1.45] (3/3)</td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2.5 text-slate-400">board-median</td>
+                  <td class="px-3 py-2.5">2.78</td>
+                  <td class="px-3 py-2.5">2.94</td>
+                  <td class="px-3 py-2.5 text-emerald-400 font-bold">2.54</td>
+                  <td class="px-3 py-2.5 text-emerald-400">-8.52%</td>
+                  <td class="px-3 py-2.5 text-emerald-400">-14.03%</td>
+                  <td class="px-3 py-2.5">[-0.79, -0.12]</td>
+                  <td class="px-3 py-2.5">[-0.47, -0.26, -0.52] (3/3)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Cost Decision Curve Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 flex flex-col justify-between shadow-md">
+            <div>
+              <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Cost Decision Crossover ($R^*=1,203$)</h2>
+              <p class="text-xs text-slate-400 mb-4 font-mono">
+                $\text{Cost} = \text{Reviews} + R \cdot \text{Escapes}$ where $R = C_{\text{escape}} / C_{\text{review}}$
+              </p>
+              <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 space-y-2 text-xs font-mono">
+                <div class="text-emerald-400 font-bold">Aggregate Pareto Dominance:</div>
+                <div class="text-slate-300">Under pooled, shift-inflated, and board-median calibration, Policy B reduces both review workload and critical escapes in aggregate.</div>
+                <div class="text-amber-400 font-bold pt-2">Worst-Board Break-Even Derivation:</div>
+                <div class="text-slate-300">Workload drops from $12.10 \to 8.09$ (saving $4,010$ reviews/1k boards), while escapes shift $80.2 \to 83.6$ ($+3.34$ escapes):</div>
+                <div class="p-2 bg-slate-900 rounded text-blue-400 text-center font-bold">
+                  $3.333 \cdot R < 4,010.22 \implies R^* = 1,203.07$
+                </div>
+                <div class="text-[11px] text-slate-400">Policy B is cost-preferred for $R < 1,203$. For standard manufacturing ($R \in [50, 500]$), PCBRisk provides substantial net savings.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 flex items-center justify-center shadow-md">
+            <img src="/05_results/cost_curve_analysis.png" alt="Cost Curve Analysis" class="rounded-lg max-h-72 w-auto object-contain border border-slate-800 shadow-md"/>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- VIEW E: INSPECTION HISTORY -->
+    <div id="view-history" class="flex-1 flex flex-col hidden overflow-y-auto">
+      <header class="h-16 bg-slate-900 border-b border-slate-800 px-8 flex items-center justify-between shrink-0">
+        <div>
+          <h1 class="text-lg font-bold text-white tracking-tight">Inspection History & Traceability Log</h1>
+          <p class="text-xs text-slate-400 font-medium">Chronological record of inspected PCB boards with MES telemetry</p>
+        </div>
+        <button onclick="exportAuditReport()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-mono font-bold flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">download</span>
+          <span>Download MES History (CSV)</span>
+        </button>
+      </header>
+
+      <main class="p-8">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-lg">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="bg-slate-950 text-slate-400 text-[10px] uppercase border-b border-slate-800">
+                <tr>
+                  <th class="px-4 py-3">Timestamp</th>
+                  <th class="px-4 py-3">Board ID</th>
+                  <th class="px-4 py-3">Total Findings</th>
+                  <th class="px-4 py-3">Red (Critical)</th>
+                  <th class="px-4 py-3">Yellow (Borderline)</th>
+                  <th class="px-4 py-3">Green (Bypassed)</th>
+                  <th class="px-4 py-3">Latency (ms)</th>
+                  <th class="px-4 py-3">Overall Status</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body" class="divide-y divide-slate-800 text-slate-300">
+                <tr>
+                  <td colspan="8" class="px-4 py-8 text-center text-slate-500">
+                    No previous inspections in current session. Run an inspection to populate history.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+  </div>
+
+  <!-- ================= 4. MODALS (UPLOAD & HOTKEYS) ================= -->
+  
+  <!-- Upload Modal -->
+  <div id="upload-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <span class="material-symbols-outlined text-blue-400">upload_file</span>
+          Upload Custom PCB Image Pair
+        </h3>
+        <button onclick="closeUploadModal()" class="text-slate-400 hover:text-white">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+      <p class="text-xs text-slate-400">Upload an optical test inspection photo and its corresponding golden CAD / template reference image.</p>
+      
+      <div class="space-y-3 font-mono text-xs">
+        <div>
+          <label class="block text-slate-300 mb-1">1. Test Image (Defective PCB):</label>
+          <input type="file" id="upload-test-file" accept="image/*" class="w-full text-slate-400 bg-slate-950 border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"/>
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">2. Golden Template Image:</label>
+          <input type="file" id="upload-temp-file" accept="image/*" class="w-full text-slate-400 bg-slate-950 border border-slate-800 rounded p-2 focus:outline-none focus:border-blue-500"/>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end gap-2">
+        <button onclick="closeUploadModal()" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300">Cancel</button>
+        <button onclick="submitCustomUpload()" class="px-4 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white text-xs font-mono font-bold flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">play_arrow</span>
+          <span>Execute Inspection</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div id="hotkeys-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl w-full max-w-lg p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <span class="material-symbols-outlined text-purple-400">keyboard</span>
+          Factory AOI Operator Keyboard Shortcuts
+        </h3>
+        <button onclick="closeHotkeysModal()" class="text-slate-400 hover:text-white">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+      <p class="text-xs text-slate-400">Ergonomic hotkeys for high-speed conveyor line triage without mouse fatigue:</p>
+      
+      <div class="grid grid-cols-2 gap-3 text-xs font-mono">
+        <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+          <div class="text-slate-400 text-[10px]">INSPECTION ACTIONS</div>
+          <div class="mt-1.5 space-y-1">
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-blue-400">Enter</kbd> <span>Run Inspection</span></div>
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-amber-400">T</kbd> <span>Toggle Template</span></div>
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-slate-300">Z</kbd> <span>Reset Zoom / Fit</span></div>
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-purple-400">Ctrl+Z</kbd> <span>Undo Last Action</span></div>
+          </div>
+        </div>
+
+        <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+          <div class="text-slate-400 text-[10px]">DEFECT DISPOSITION</div>
+          <div class="mt-1.5 space-y-1">
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-emerald-400">A / Space</kbd> <span>Pass / Approve</span></div>
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-red-400">R / X</kbd> <span>Scrap / Reject</span></div>
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-blue-400">W</kbd> <span>Solder Rework</span></div>
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-amber-400">F</kbd> <span>Send to FPT</span></div>
+          </div>
+        </div>
+
+        <div class="p-2.5 bg-slate-950 rounded border border-slate-800 col-span-2">
+          <div class="text-slate-400 text-[10px]">DEFECT SELECTION & QUEUES</div>
+          <div class="mt-1.5 grid grid-cols-2 gap-2">
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-slate-300">J / &darr;</kbd> <span>Next Defect</span></div>
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-slate-300">K / &uarr;</kbd> <span>Prev Defect</span></div>
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-red-400">1</kbd> <span>Red Queue</span></div>
+            <div class="flex justify-between"><kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-amber-400">2</kbd> <span>Yellow Queue</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-1 flex justify-end">
+        <button onclick="closeHotkeysModal()" class="px-4 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white text-xs font-mono font-bold">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 5. MASTER APPLICATION JAVASCRIPT ================= -->
+  <script>
+    // -------------------------------------------------------------
+    // Synthesized Web Audio Earcons (Zero Dependency Sound Engine)
+    // -------------------------------------------------------------
+    class SoundFX {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playPass() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, t); // D5
+        osc.frequency.exponentialRampToValueAtTime(880.0, t + 0.08); // A5
+        gain.gain.setValueAtTime(0.12, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.12);
+      }
+      playScrap() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(440.0, t); // A4
+        osc.frequency.setValueAtTime(311.13, t + 0.08); // Eb4 (Dissonant warning)
+        gain.gain.setValueAtTime(0.18, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.18);
+      }
+      playNeutral() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, t);
+        gain.gain.setValueAtTime(0.08, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.05);
+      }
+    }
+    const sfx = new SoundFX();
+
+    function toggleAudio() {
+      sfx.enabled = !sfx.enabled;
+      const icon = document.getElementById('audio-icon');
+      const btn = document.getElementById('btn-audio-toggle');
+      if (sfx.enabled) {
+        icon.textContent = 'volume_up';
+        btn.className = "p-1 rounded bg-slate-800 hover:bg-slate-700 text-emerald-400 transition-colors";
+        sfx.playNeutral();
+        showToast('Auditory Feedback: Enabled', 'info');
+      } else {
+        icon.textContent = 'volume_off';
+        btn.className = "p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-500 transition-colors";
+        showToast('Auditory Feedback: Muted', 'info');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Application State Variables
+    // -------------------------------------------------------------
+    let currentInspectionData = null;
+    let selectedCandidateIndex = -1;
+    let activeQueueFilter = 'ALL';
+    let currentDisplayMode = 'annotated';
+    let isSidebarCollapsed = false;
+
+    // Viewport pan/zoom state
+    let zoomLevel = 1.0;
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+
+    // Undo buffer for MES dispositions
+    let pendingDispositions = []; // { id, boardId, boxIndex, action, timerId, toastEl }
+
+    // Image buffers
+    let imgTest = new Image();
+    let imgTemp = new Image();
+    let imgAnnotated = new Image();
+    let imagesLoaded = { test: false, temp: false, overlay: false };
+
+    // Canvas references
+    const mainCanvas = document.getElementById('main-viewport-canvas');
+    const mainCtx = mainCanvas.getContext('2d');
+    const minimapCanvas = document.getElementById('minimap-canvas');
+    const minimapCtx = minimapCanvas.getContext('2d');
+    const wrapper = document.getElementById('canvas-transform-wrapper');
+    const stage = document.getElementById('viewport-stage');
+    const tooltip = document.getElementById('canvas-box-tooltip');
+
+    // -------------------------------------------------------------
+    // Initialization & Event Listeners
+    // -------------------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      initCanvasEvents();
+      initKeyboardHotkeys();
+      loadSelectedSample();
+    });
+
+    function toggleSidebar() {
+      const sb = document.getElementById('main-sidebar');
+      const icon = document.getElementById('sidebar-toggle-icon');
+      isSidebarCollapsed = !isSidebarCollapsed;
+      if (isSidebarCollapsed) {
+        sb.classList.add('sidebar-collapsed');
+        icon.textContent = 'menu';
+      } else {
+        sb.classList.remove('sidebar-collapsed');
+        icon.textContent = 'menu_open';
+      }
+      sfx.playNeutral();
+    }
+
+    function switchView(viewName) {
+      const views = ['overview', 'workspace', 'results', 'evaluation', 'history'];
+      views.forEach(v => {
+        const el = document.getElementById('view-' + v);
+        const nav = document.getElementById('nav-' + v);
+        if (v === viewName) {
+          el.classList.remove('hidden');
+          nav.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600/20 text-blue-400 font-semibold text-sm transition-all text-left border border-blue-500/30";
+        } else {
+          el.classList.add('hidden');
+          nav.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition-all text-left";
+        }
+      });
+      if (viewName === 'history') loadHistory();
+      if (viewName === 'workspace') renderMainCanvas();
+    }
+
+    // -------------------------------------------------------------
+    // Direct Manipulation: Real-Time Dynamic Re-Thresholding
+    // -------------------------------------------------------------
+    function handleRealtimeAlphaChange(val) {
+      document.getElementById('alpha-label').textContent = parseFloat(val).toFixed(2);
+      const calibrator = document.getElementById('calibrator-select').value;
+      recomputeConformalQueuesInRealtime(parseFloat(val), calibrator);
+    }
+
+    function handleRealtimeCalibratorChange(calibrator) {
+      const alpha = parseFloat(document.getElementById('alpha-slider').value);
+      recomputeConformalQueuesInRealtime(alpha, calibrator);
+    }
+
+    function setAlphaPreset(val) {
+      const slider = document.getElementById('alpha-slider');
+      slider.value = val;
+      handleRealtimeAlphaChange(val);
+
+      // Highlight active preset button
+      const presets = { 0.02: 'preset-ipc3', 0.05: 'preset-ipc2', 0.10: 'preset-screen' };
+      Object.keys(presets).forEach(k => {
+        const btn = document.getElementById(presets[k]);
+        if (parseFloat(k) === val) {
+          btn.className = "px-2 py-0.5 rounded bg-blue-600/30 text-blue-300 font-bold";
+        } else {
+          btn.className = "px-2 py-0.5 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors";
+        }
+      });
+
+      sfx.playNeutral();
+      showToast(`Target Escape Ceiling set to ${val * 100}% (α=${val})`, 'info');
+    }
+
+    function recomputeConformalQueuesInRealtime(alphaVal, calibrator) {
+      if (!currentInspectionData || !currentInspectionData.candidates) return;
+
+      let baseTau = 0.50;
+      if (calibrator === 'worst-board') baseTau = alphaVal <= 0.05 ? 0.35 : 0.45;
+      else if (calibrator === 'shift-inflated') baseTau = alphaVal <= 0.05 ? 0.45 : 0.52;
+      else if (calibrator === 'board-median') baseTau = alphaVal <= 0.05 ? 0.58 : 0.65;
+      else baseTau = alphaVal <= 0.05 ? 0.50 : 0.60;
+
+      const epsilon = 0.08;
+      let red = 0, yellow = 0, green = 0;
+
+      currentInspectionData.candidates.forEach(c => {
+        const s = c.triage.risk_score;
+        if (s >= baseTau) {
+          c.triage.queue = 'RED';
+          c.triage.color = '#ef4444';
+          c.triage.action = 'Manual Inspector Review / Scrap Disposition';
+          red++;
+        } else if (s >= (baseTau - epsilon)) {
+          c.triage.queue = 'YELLOW';
+          c.triage.color = '#f59e0b';
+          c.triage.action = 'Route to Flying Probe Continuity Testing (FPT)';
+          yellow++;
+        } else {
+          c.triage.queue = 'GREEN';
+          c.triage.color = '#10b981';
+          c.triage.action = 'Auto-Bypassed (Cosmetic Flaw Cleared)';
+          green++;
+        }
+        c.triage.tau_threshold = baseTau;
+      });
+
+      const total = currentInspectionData.candidates.length;
+      currentInspectionData.summary.red_queue_critical = red;
+      currentInspectionData.summary.yellow_queue_borderline = yellow;
+      currentInspectionData.summary.green_queue_bypassed = green;
+      currentInspectionData.summary.workload_reduction_pct = total > 0 ? parseFloat((green / total * 100).toFixed(1)) : 0;
+      currentInspectionData.parameters.alpha = alphaVal;
+      currentInspectionData.parameters.calibrator = calibrator;
+
+      // Update UI elements in place immediately
+      document.getElementById('badge-red').textContent = `${red} Red`;
+      document.getElementById('badge-yellow').textContent = `${yellow} Yellow`;
+      document.getElementById('badge-green').textContent = `${green} Green`;
+
+      renderDefectListItems();
+      if (selectedCandidateIndex !== -1) {
+        selectCandidateBox(selectedCandidateIndex, false);
+      }
+      renderMainCanvas();
+      populateResultsTable(currentInspectionData);
+    }
+
+    // -------------------------------------------------------------
+    // Sample Loading & Inspection Pipeline
+    // -------------------------------------------------------------
+    function loadSelectedSample() {
+      const sampleId = document.getElementById('sample-select').value;
+      imagesLoaded = { test: false, temp: false, overlay: false };
+      currentInspectionData = null;
+      selectedCandidateIndex = -1;
+
+      imgTest.crossOrigin = 'anonymous';
+      imgTest.src = `/api/image/${sampleId}/test`;
+      imgTest.onload = () => {
+        imagesLoaded.test = true;
+        renderMainCanvas();
+        updateMinimap();
+      };
+
+      imgTemp.crossOrigin = 'anonymous';
+      imgTemp.src = `/api/image/${sampleId}/temp`;
+      imgTemp.onload = () => { imagesLoaded.temp = true; };
+
+      resetZoom();
+      document.getElementById('defect-list').innerHTML = `
+        <div class="text-center py-12 text-slate-500 text-xs font-mono">
+          Loaded sample ${sampleId}.<br/>Click "Run Inspection" or press <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Enter</kbd>.
+        </div>`;
+      document.getElementById('dossier-content').innerHTML = `
+        <div class="text-slate-400 text-[11px]">Ready to inspect. Run inspection to generate topological consequence dossiers.</div>`;
+      document.getElementById('findings-count').textContent = `0 Detected`;
+      document.getElementById('timing-status').textContent = `Loaded Board ${sampleId}. Ready to inspect.`;
+      document.getElementById('timing-metrics').innerHTML = '';
+      setDisplayMode('raw_test');
+    }
+
+    async function executeInspection() {
+      const btn = document.getElementById('btn-inspect');
+      const sampleId = document.getElementById('sample-select').value;
+      const alpha = document.getElementById('alpha-slider').value;
+      const calibrator = document.getElementById('calibrator-select').value;
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="material-symbols-outlined text-base animate-spin">refresh</span><span>Inspecting...</span>`;
+      document.getElementById('timing-status').textContent = `Running YOLO11n ONNX detector + Topological Consequence Engine...`;
+
+      try {
+        const formData = new FormData();
+        formData.append('sample_id', sampleId);
+        formData.append('alpha', alpha);
+        formData.append('calibrator', calibrator);
+
+        const resp = await fetch('/api/inspect', { method: 'POST', body: formData });
+        if (!resp.ok) throw new Error('Inspection request failed: ' + resp.statusText);
+
+        const data = await resp.json();
+        currentInspectionData = data;
+
+        if (data.overlay_image) {
+          imgAnnotated.src = data.overlay_image;
+          imgAnnotated.onload = () => {
+            imagesLoaded.overlay = true;
+            setDisplayMode('annotated');
+          };
+        }
+
+        renderInspectionResults(data);
+        sfx.playNeutral();
+        showToast(`Inspection Complete: ${data.summary.total_candidates} Findings (${data.summary.workload_reduction_pct}% load reduction)`, 'success');
+      } catch (err) {
+        showToast(`Error: ${err.message}`, 'error');
+        document.getElementById('timing-status').textContent = `Error: ${err.message}`;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span class="material-symbols-outlined text-base">play_arrow</span><span>Run Inspection (Enter)</span>`;
+      }
+    }
+
+    function renderInspectionResults(data) {
+      // 1. Timing Metrics
+      const t = data.timing;
+      document.getElementById('timing-status').textContent = `Inspection completed for Board ${data.board_id} in ${t.total_pipeline_ms} ms (${t.throughput_fps} FPS)`;
+      document.getElementById('timing-metrics').innerHTML = `
+        <span>YOLO: <b>${t.detector_inference_ms}ms</b></span>
+        <span>Base Morph: <b>${t.full_frame_base_morph_ms}ms</b></span>
+        <span>Query: <b>${t.consequence_queries_ms}ms</b></span>
+      `;
+
+      // 2. Queue Badges
+      const sum = data.summary;
+      document.getElementById('findings-count').textContent = `${sum.total_candidates} Findings`;
+      document.getElementById('badge-red').textContent = `${sum.red_queue_critical} Red`;
+      document.getElementById('badge-yellow').textContent = `${sum.yellow_queue_borderline} Yellow`;
+      document.getElementById('badge-green').textContent = `${sum.green_queue_bypassed} Green`;
+
+      // 3. Render Defect List
+      filterQueueList(activeQueueFilter);
+
+      // 4. Select First Defect
+      if (data.candidates.length > 0) {
+        selectCandidateBox(0);
+      }
+
+      // 5. Populate Results Table in View C
+      populateResultsTable(data);
+      updateMinimap();
+    }
+
+    // -------------------------------------------------------------
+    // Interactive Canvas Viewport & Pan/Zoom
+    // -------------------------------------------------------------
+    function initCanvasEvents() {
+      // Wheel Zoom
+      stage.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const rect = stage.getBoundingClientRect();
+        const cursorX = e.clientX - rect.left - rect.width / 2;
+        const cursorY = e.clientY - rect.top - rect.height / 2;
+
+        const delta = e.deltaY < 0 ? 1.15 : 0.85;
+        const newZoom = Math.max(0.6, Math.min(12.0, zoomLevel * delta));
+
+        panX = cursorX - (cursorX - panX) * (newZoom / zoomLevel);
+        panY = cursorY - (cursorY - panY) * (newZoom / zoomLevel);
+        zoomLevel = newZoom;
+
+        applyCanvasTransform();
+        updateMinimap();
+      }, { passive: false });
+
+      // Pan Dragging
+      stage.addEventListener('mousedown', (e) => {
+        if (e.button === 0) {
+          isDragging = true;
+          dragStartX = e.clientX - panX;
+          dragStartY = e.clientY - panY;
+        }
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          panX = e.clientX - dragStartX;
+          panY = e.clientY - dragStartY;
+          applyCanvasTransform();
+          updateMinimap();
+        } else {
+          handleCanvasHover(e);
+        }
+      });
+
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      // Canvas Box Click Hit-Testing
+      mainCanvas.addEventListener('click', (e) => {
+        const rect = mainCanvas.getBoundingClientRect();
+        const scaleX = 640 / rect.width;
+        const scaleY = 640 / rect.height;
+        const clickX = (e.clientX - rect.left) * scaleX;
+        const clickY = (e.clientY - rect.top) * scaleY;
+
+        if (!currentInspectionData || !currentInspectionData.candidates) return;
+
+        let foundIdx = -1;
+        for (let i = 0; i < currentInspectionData.candidates.length; i++) {
+          const [x1, y1, x2, y2] = currentInspectionData.candidates[i].box;
+          if (clickX >= x1 && clickX <= x2 && clickY >= y1 && clickY <= y2) {
+            foundIdx = i;
+            break;
+          }
+        }
+
+        if (foundIdx !== -1) {
+          selectCandidateBox(foundIdx);
+          sfx.playNeutral();
+          showToast(`Selected Defect #DF-${String(foundIdx + 1).padStart(2, '0')}`, 'info');
+        }
+      });
+    }
+
+    function handleCanvasHover(e) {
+      if (!currentInspectionData || !currentInspectionData.candidates) {
+        tooltip.classList.add('hidden');
+        return;
+      }
+      const rect = mainCanvas.getBoundingClientRect();
+      const scaleX = 640 / rect.width;
+      const scaleY = 640 / rect.height;
+      const mouseX = (e.clientX - rect.left) * scaleX;
+      const mouseY = (e.clientY - rect.top) * scaleY;
+
+      let hovered = null;
+      for (let i = 0; i < currentInspectionData.candidates.length; i++) {
+        const [x1, y1, x2, y2] = currentInspectionData.candidates[i].box;
+        if (mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2) {
+          hovered = currentInspectionData.candidates[i];
+          break;
+        }
+      }
+
+      if (hovered) {
+        tooltip.style.left = `${e.clientX - stage.getBoundingClientRect().left + 14}px`;
+        tooltip.style.top = `${e.clientY - stage.getBoundingClientRect().top + 14}px`;
+        tooltip.classList.remove('hidden');
+        document.getElementById('tooltip-title').innerHTML = `<span class="${hovered.triage.color}">${hovered.class_name.toUpperCase()}</span> (${(hovered.confidence * 100).toFixed(0)}%)`;
+        document.getElementById('tooltip-desc').textContent = `Queue: ${hovered.triage.queue} | Risk: ${hovered.triage.risk_score}`;
+      } else {
+        tooltip.classList.add('hidden');
+      }
+    }
+
+    function applyCanvasTransform() {
+      wrapper.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+      
+      // Update HUD Grid Sector
+      const gridSectorX = Math.max(1, Math.min(8, Math.floor((320 - panX / zoomLevel) / 80) + 1));
+      const gridSectorY = Math.max(1, Math.min(8, Math.floor((320 - panY / zoomLevel) / 80) + 1));
+      const sectorCol = String.fromCharCode(64 + gridSectorX);
+      document.getElementById('hud-grid-text').textContent = `GRID: SECTOR ${sectorCol}-${gridSectorY} | ZOOM: ${zoomLevel.toFixed(1)}&times;`;
+    }
+
+    function zoomBy(factor) {
+      zoomLevel = Math.max(0.6, Math.min(12.0, zoomLevel * factor));
+      applyCanvasTransform();
+      updateMinimap();
+      sfx.playNeutral();
+    }
+
+    function setZoom(val) {
+      zoomLevel = val;
+      panX = 0;
+      panY = 0;
+      applyCanvasTransform();
+      updateMinimap();
+      sfx.playNeutral();
+    }
+
+    function resetZoom() {
+      zoomLevel = 1.0;
+      panX = 0;
+      panY = 0;
+      applyCanvasTransform();
+      updateMinimap();
+      sfx.playNeutral();
+    }
+
+    // -------------------------------------------------------------
+    // Display Mode & Rendering
+    // -------------------------------------------------------------
+    function setDisplayMode(mode) {
+      currentDisplayMode = mode;
+      ['annotated', 'raw_test', 'template', 'split'].forEach(m => {
+        const btn = document.getElementById('mode-' + m);
+        if (m === mode) {
+          btn.className = "px-2 py-0.5 rounded bg-blue-600 text-white font-bold transition-all";
+        } else {
+          btn.className = "px-2 py-0.5 rounded text-slate-400 hover:text-white transition-all";
+        }
+      });
+      renderMainCanvas();
+    }
+
+    function toggleTemplateMode() {
+      if (currentDisplayMode === 'template') {
+        setDisplayMode('annotated');
+      } else {
+        setDisplayMode('template');
+      }
+      sfx.playNeutral();
+    }
+
+    function renderMainCanvas() {
+      mainCtx.clearRect(0, 0, 640, 640);
+
+      // 1. Draw Background Image
+      if (currentDisplayMode === 'template' && imagesLoaded.temp) {
+        mainCtx.drawImage(imgTemp, 0, 0, 640, 640);
+      } else if (currentDisplayMode === 'annotated' && imagesLoaded.overlay) {
+        mainCtx.drawImage(imgAnnotated, 0, 0, 640, 640);
+      } else if (currentDisplayMode === 'split' && imagesLoaded.test && imagesLoaded.temp) {
+        mainCtx.drawImage(imgTest, 0, 0, 320, 640, 0, 0, 320, 640);
+        mainCtx.drawImage(imgTemp, 320, 0, 320, 640, 320, 0, 320, 640);
+        mainCtx.strokeStyle = '#3b82f6';
+        mainCtx.lineWidth = 2;
+        mainCtx.beginPath();
+        mainCtx.moveTo(320, 0);
+        mainCtx.lineTo(320, 640);
+        mainCtx.stroke();
+      } else if (imagesLoaded.test) {
+        mainCtx.drawImage(imgTest, 0, 0, 640, 640);
+      }
+
+      // 2. Draw Interactive Overlay Vectors
+      if (currentInspectionData && currentInspectionData.candidates) {
+        const candidates = currentInspectionData.candidates;
+        candidates.forEach((c, i) => {
+          if (activeQueueFilter !== 'ALL' && c.triage.queue !== activeQueueFilter) return;
+
+          const [x1, y1, x2, y2] = c.box;
+          const isSelected = (i === selectedCandidateIndex);
+
+          // Box stroke
+          mainCtx.lineWidth = isSelected ? 3 : 1.5;
+          mainCtx.strokeStyle = isSelected ? '#38bdf8' : (c.triage.queue === 'RED' ? '#ef4444' : (c.triage.queue === 'YELLOW' ? '#f59e0b' : '#10b981'));
+          mainCtx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+
+          // Active Reticle Crosshair
+          if (isSelected) {
+            mainCtx.strokeStyle = '#38bdf8';
+            mainCtx.lineWidth = 2.5;
+            const rLen = 8;
+            // Top-left
+            mainCtx.beginPath(); mainCtx.moveTo(x1 - 4, y1 + rLen); mainCtx.lineTo(x1 - 4, y1 - 4); mainCtx.lineTo(x1 + rLen, y1 - 4); mainCtx.stroke();
+            // Top-right
+            mainCtx.beginPath(); mainCtx.moveTo(x2 + 4 - rLen, y1 - 4); mainCtx.lineTo(x2 + 4, y1 - 4); mainCtx.lineTo(x2 + 4, y1 + rLen); mainCtx.stroke();
+            // Bottom-left
+            mainCtx.beginPath(); mainCtx.moveTo(x1 - 4, y2 - rLen); mainCtx.lineTo(x1 - 4, y2 + 4); mainCtx.lineTo(x1 + rLen, y2 + 4); mainCtx.stroke();
+            // Bottom-right
+            mainCtx.beginPath(); mainCtx.moveTo(x2 + 4 - rLen, y2 + 4); mainCtx.lineTo(x2 + 4, y2 + 4); mainCtx.lineTo(x2 + 4, y2 - rLen); mainCtx.stroke();
+          }
+        });
+      }
+    }
+
+    function updateMinimap() {
+      const mapBox = document.getElementById('minimap-container');
+      if (zoomLevel <= 1.05) {
+        mapBox.classList.add('hidden');
+        return;
+      }
+      mapBox.classList.remove('hidden');
+
+      minimapCtx.clearRect(0, 0, 112, 112);
+      if (imagesLoaded.test) {
+        minimapCtx.drawImage(imgTest, 0, 0, 112, 112);
+      }
+
+      const rectEl = document.getElementById('minimap-viewport-rect');
+      const wPct = Math.min(1.0, 1.0 / zoomLevel);
+      const hPct = Math.min(1.0, 1.0 / zoomLevel);
+      const xPct = Math.max(0, Math.min(1.0 - wPct, (0.5 - (panX / (640 * zoomLevel))) - wPct / 2));
+      const yPct = Math.max(0, Math.min(1.0 - hPct, (0.5 - (panY / (640 * zoomLevel))) - hPct / 2));
+
+      rectEl.style.left = `${xPct * 112}px`;
+      rectEl.style.top = `${yPct * 112}px`;
+      rectEl.style.width = `${wPct * 112}px`;
+      rectEl.style.height = `${hPct * 112}px`;
+    }
+
+    // -------------------------------------------------------------
+    // Defect Selection & Clean Semantic Dossier
+    // -------------------------------------------------------------
+    function filterQueueList(q) {
+      activeQueueFilter = q;
+      ['ALL', 'RED', 'YELLOW', 'GREEN'].forEach(k => {
+        const btn = document.getElementById(k === 'ALL' ? 'filter-all' : 'badge-' + k.toLowerCase());
+        if (!btn) return;
+        if (k === q) {
+          btn.classList.add('ring-2', 'ring-white');
+        } else {
+          btn.classList.remove('ring-2', 'ring-white');
+        }
+      });
+
+      if (!currentInspectionData) return;
+      renderDefectListItems();
+      renderMainCanvas();
+    }
+
+    function renderDefectListItems() {
+      const listEl = document.getElementById('defect-list');
+      const candidates = currentInspectionData.candidates || [];
+      const filtered = candidates.filter(c => activeQueueFilter === 'ALL' || c.triage.queue === activeQueueFilter);
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="text-center py-10 text-slate-500 font-mono text-xs">No defects in ${activeQueueFilter} queue.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map((c) => {
+        const origIdx = candidates.indexOf(c);
+        const q = c.triage.queue;
+        const isSelected = (origIdx === selectedCandidateIndex);
+        const qBorder = isSelected ? 'border-blue-400 bg-blue-950/40 ring-1 ring-blue-400' : (q === 'RED' ? 'border-red-500/50 bg-red-950/20' : (q === 'YELLOW' ? 'border-amber-500/50 bg-amber-950/20' : 'border-emerald-500/50 bg-emerald-950/20'));
+        const qText = q === 'RED' ? 'text-red-400' : (q === 'YELLOW' ? 'text-amber-400' : 'text-emerald-400');
+
+        return `
+          <div onclick="selectCandidateBox(${origIdx})" class="p-2.5 rounded-lg border ${qBorder} hover:bg-slate-800/80 cursor-pointer transition-all select-none">
+            <div class="flex items-center justify-between">
+              <span class="font-mono font-bold text-xs ${qText}">#DF-${String(origIdx+1).padStart(2, '0')} ${c.class_name.toUpperCase()}</span>
+              <span class="text-[9px] font-mono px-1.5 py-0.5 rounded font-bold ${qText} bg-slate-900 border border-slate-700">${q}</span>
+            </div>
+            <div class="flex justify-between items-center text-[10px] text-slate-400 font-mono mt-1">
+              <span>Conf: ${(c.confidence * 100).toFixed(1)}%</span>
+              <span>Risk: ${c.triage.risk_score} (vs &tau;=${c.triage.tau_threshold})</span>
+            </div>
+            <div class="text-[9px] text-slate-400 font-mono mt-0.5">
+              ${c.topological_features.g_open ? '<span class="text-red-400 font-bold">[SEVERED TRACE]</span> ' : ''}
+              ${c.topological_features.g_short ? '<span class="text-red-400 font-bold">[NET BRIDGE]</span> ' : ''}
+              Missing: ${c.topological_features.missing_pixels}px | Excess: ${c.topological_features.excess_pixels}px
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectCandidateBox(index, centerCanvas = true) {
+      if (!currentInspectionData || !currentInspectionData.candidates[index]) return;
+      selectedCandidateIndex = index;
+      renderDefectListItems();
+      renderMainCanvas();
+
+      const c = currentInspectionData.candidates[index];
+      const [x1, y1, x2, y2] = c.box;
+      const q = c.triage.queue;
+      const qColor = q === 'RED' ? 'text-red-400' : (q === 'YELLOW' ? 'text-amber-400' : 'text-emerald-400');
+      const qBg = q === 'RED' ? 'bg-red-950/60 border-red-800' : (q === 'YELLOW' ? 'bg-amber-950/60 border-amber-800' : 'bg-emerald-950/60 border-emerald-800');
+
+      if (centerCanvas) {
+        const boxCenterX = (x1 + x2) / 2;
+        const boxCenterY = (y1 + y2) / 2;
+        panX = -(boxCenterX - 320) * zoomLevel;
+        panY = -(boxCenterY - 320) * zoomLevel;
+        applyCanvasTransform();
+        updateMinimap();
+      }
+
+      // Render Clean Semantic Dossier
+      const riskPct = Math.min(100, Math.round(c.triage.risk_score * 100));
+      const riskColor = riskPct >= 70 ? 'bg-red-500' : (riskPct >= 40 ? 'bg-amber-500' : 'bg-emerald-500');
+
+      const dossierEl = document.getElementById('dossier-content');
+      dossierEl.innerHTML = `
+        <div class="space-y-3">
+          <!-- Semantic Status Header Banner -->
+          <div class="p-2.5 rounded-lg border ${qBg} flex items-center justify-between">
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase">Defect Classification</div>
+              <div class="font-bold text-xs ${qColor}">#DF-${String(index+1).padStart(2, '0')}: ${c.class_name.toUpperCase()}</div>
+            </div>
+            <span class="px-2 py-0.5 rounded font-bold text-[10px] ${qColor} bg-slate-900 border border-slate-700">${q} QUEUE</span>
+          </div>
+
+          <!-- High-Magnification Side-by-Side Crop (3x) -->
+          <div class="grid grid-cols-2 gap-2 p-2 bg-slate-900/90 rounded-lg border border-slate-800">
+            <div class="flex flex-col items-center">
+              <span class="text-[9px] text-slate-400 mb-1 font-mono">TEST DEFECT (3&times;)</span>
+              <canvas id="crop-test-canvas" width="80" height="80" class="border border-slate-700 rounded bg-black pixelated"></canvas>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-[9px] text-slate-400 mb-1 font-mono">GOLDEN REF (3&times;)</span>
+              <canvas id="crop-temp-canvas" width="80" height="80" class="border border-slate-700 rounded bg-black pixelated"></canvas>
+            </div>
+          </div>
+
+          <!-- Visual Severity Meter & Topo Indicator -->
+          <div class="space-y-1.5 p-2 bg-slate-900/60 rounded border border-slate-800 text-[11px]">
+            <div class="flex justify-between items-center text-slate-300">
+              <span>Risk Calibration Score:</span>
+              <span class="font-bold font-mono text-white">${c.triage.risk_score} (Ceiling: &tau;=${c.triage.tau_threshold})</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div class="h-full ${riskColor} transition-all duration-300" style="width: ${riskPct}%;"></div>
+            </div>
+            
+            <div class="pt-1 flex items-center gap-2 text-[10px]">
+              ${c.topological_features.g_open ? '<span class="text-red-400 font-bold flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Severe Open Circuit (Trace Discontinuity)</span>' : ''}
+              ${c.topological_features.g_short ? '<span class="text-red-400 font-bold flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Net Bridge Short Circuit</span>' : ''}
+              ${!c.topological_features.g_open && !c.topological_features.g_short ? '<span class="text-emerald-400 flex items-center gap-1">● Non-Functional Cosmetic Flaw (Safe to Bypass)</span>' : ''}
+            </div>
+          </div>
+
+          <!-- Tactile Fitts' Law Decision Cards (44px Height) -->
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <!-- Pass Card -->
+            <button onclick="scheduleDisposition('${currentInspectionData.board_id}', ${index}, 'APPROVE')" class="h-11 px-3 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white rounded-lg font-bold flex items-center justify-between shadow transition-all cursor-pointer">
+              <div class="text-left leading-tight">
+                <div class="text-xs">Pass / Clear</div>
+                <div class="text-[9px] opacity-75">HotKey: A / Space</div>
+              </div>
+              <span class="material-symbols-outlined text-base">check_circle</span>
+            </button>
+
+            <!-- Scrap Card -->
+            <button onclick="scheduleDisposition('${currentInspectionData.board_id}', ${index}, 'REJECT')" class="h-11 px-3 bg-red-600 hover:bg-red-500 active:bg-red-700 text-white rounded-lg font-bold flex items-center justify-between shadow transition-all cursor-pointer">
+              <div class="text-left leading-tight">
+                <div class="text-xs">Scrap / Reject</div>
+                <div class="text-[9px] opacity-75">HotKey: R / X</div>
+              </div>
+              <span class="material-symbols-outlined text-base">cancel</span>
+            </button>
+
+            <!-- Rework Card -->
+            <button onclick="scheduleDisposition('${currentInspectionData.board_id}', ${index}, 'REWORK')" class="h-9 px-2.5 bg-blue-600/80 hover:bg-blue-600 active:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center justify-between transition-all cursor-pointer">
+              <span>Solder Rework</span>
+              <kbd class="text-[9px] opacity-75 font-mono">W</kbd>
+            </button>
+
+            <!-- FPT Card -->
+            <button onclick="scheduleDisposition('${currentInspectionData.board_id}', ${index}, 'SEND_TO_FPT')" class="h-9 px-2.5 bg-amber-600/80 hover:bg-amber-600 active:bg-amber-700 text-white rounded-lg text-xs font-semibold flex items-center justify-between transition-all cursor-pointer">
+              <span>Route to FPT</span>
+              <kbd class="text-[9px] opacity-75 font-mono">F</kbd>
+            </button>
+          </div>
+
+          <!-- Expandable Developer / Diagnostics Drawer -->
+          <details class="text-[10px] text-slate-400 bg-slate-900/60 rounded p-2 border border-slate-800">
+            <summary class="cursor-pointer font-bold text-slate-300 hover:text-white select-none">Developer Diagnostics & Coordinates</summary>
+            <div class="grid grid-cols-2 gap-1.5 pt-2 font-mono">
+              <div>Bounding Box: [${c.box.join(', ')}]</div>
+              <div>Visual Confidence: ${(c.confidence * 100).toFixed(2)}%</div>
+              <div>Missing Copper: ${c.topological_features.missing_pixels} px</div>
+              <div>Excess Copper: ${c.topological_features.excess_pixels} px</div>
+              <div>Open Severity: ${c.topological_features.s_open_severity}</div>
+              <div>Short Severity: ${c.topological_features.s_short_severity}</div>
+            </div>
+          </details>
+        </div>
+      `;
+
+      renderMagnifiedCrops(c.box);
+    }
+
+    function renderMagnifiedCrops(box) {
+      const [x1, y1, x2, y2] = box;
+      const bw = Math.max(16, x2 - x1);
+      const bh = Math.max(16, y2 - y1);
+      const cx = (x1 + x2) / 2;
+      const cy = (y1 + y2) / 2;
+
+      const side = Math.max(bw, bh) * 1.6;
+      const cropX = Math.max(0, Math.min(640 - side, cx - side / 2));
+      const cropY = Math.max(0, Math.min(640 - side, cy - side / 2));
+
+      const testC = document.getElementById('crop-test-canvas');
+      if (testC && imagesLoaded.test) {
+        const ctx = testC.getContext('2d');
+        ctx.clearRect(0, 0, 80, 80);
+        ctx.drawImage(imgTest, cropX, cropY, side, side, 0, 0, 80, 80);
+      }
+
+      const tempC = document.getElementById('crop-temp-canvas');
+      if (tempC && imagesLoaded.temp) {
+        const ctx = tempC.getContext('2d');
+        ctx.clearRect(0, 0, 80, 80);
+        ctx.drawImage(imgTemp, cropX, cropY, side, side, 0, 0, 80, 80);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Multi-Modal Feedback & 1-Click Undo Buffer
+    // -------------------------------------------------------------
+    function scheduleDisposition(boardId, boxIndex, action) {
+      const dispId = Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+
+      // 1. Play Auditory Earcon
+      if (action === 'APPROVE') sfx.playPass();
+      else if (action === 'REJECT') sfx.playScrap();
+      else sfx.playNeutral();
+
+      // 2. Show Toast with Undo Button & 5s Countdown
+      const toast = showUndoToast(dispId, boardId, boxIndex, action);
+
+      // 3. Schedule Commit in 5 seconds
+      const timerId = setTimeout(() => {
+        commitDisposition(dispId, boardId, boxIndex, action);
+      }, 5000);
+
+      pendingDispositions.push({ id: dispId, boardId, boxIndex, action, timerId, toastEl: toast });
+    }
+
+    function undoDisposition(dispId) {
+      const idx = pendingDispositions.findIndex(d => d.id === dispId);
+      if (idx !== -1) {
+        const item = pendingDispositions[idx];
+        clearTimeout(item.timerId);
+        if (item.toastEl) item.toastEl.remove();
+        pendingDispositions.splice(idx, 1);
+        sfx.playNeutral();
+        showToast(`Undone: Disposition for #DF-${item.boxIndex + 1} canceled.`, 'info');
+      }
+    }
+
+    function undoLatestDisposition() {
+      if (pendingDispositions.length > 0) {
+        const latest = pendingDispositions[pendingDispositions.length - 1];
+        undoDisposition(latest.id);
+      } else {
+        showToast('No pending action to undo.', 'info');
+      }
+    }
+
+    async function commitDisposition(dispId, boardId, boxIndex, action) {
+      const idx = pendingDispositions.findIndex(d => d.id === dispId);
+      if (idx !== -1) {
+        pendingDispositions.splice(idx, 1);
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('board_id', boardId);
+        formData.append('box_index', boxIndex);
+        formData.append('action', action);
+
+        await fetch('/api/disposition', { method: 'POST', body: formData });
+      } catch (e) {
+        console.error('Failed to commit MES disposition:', e);
+      }
+    }
+
+    function showUndoToast(dispId, boardId, boxIndex, action) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+
+      const actionLabels = {
+        APPROVE: { title: 'Passed & Approved', color: 'bg-emerald-950/95 border-emerald-800 text-emerald-300', icon: 'check_circle' },
+        REJECT: { title: 'Scrapped / Defect Confirmed', color: 'bg-red-950/95 border-red-800 text-red-300', icon: 'cancel' },
+        REWORK: { title: 'Routed to Solder Rework', color: 'bg-blue-950/95 border-blue-800 text-blue-300', icon: 'build' },
+        SEND_TO_FPT: { title: 'Routed to Flying Probe Continuity', color: 'bg-amber-950/95 border-amber-800 text-amber-300', icon: 'electric_bolt' }
+      };
+      const info = actionLabels[action] || { title: action, color: 'bg-slate-900 border-slate-700 text-slate-200', icon: 'info' };
+
+      toast.className = `toast-anim pointer-events-auto flex items-center justify-between p-3 rounded-lg border shadow-2xl text-xs font-mono backdrop-blur ${info.color}`;
+      toast.innerHTML = `
+        <div class="flex items-center gap-2 overflow-hidden">
+          <span class="material-symbols-outlined text-base shrink-0">${info.icon}</span>
+          <div class="truncate">
+            <div class="font-bold">#DF-${boxIndex + 1}: ${info.title}</div>
+            <div class="text-[10px] opacity-75">Committing to MES in 5s...</div>
+          </div>
+        </div>
+        <button onclick="undoDisposition('${dispId}')" class="ml-3 px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white rounded text-[10px] font-bold flex items-center gap-1 cursor-pointer shrink-0">
+          <span class="material-symbols-outlined text-xs">undo</span>
+          <span>Undo</span>
+        </button>
+      `;
+
+      container.appendChild(toast);
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(-10px)';
+          toast.style.transition = 'all 0.25s ease';
+          setTimeout(() => toast.remove(), 250);
+        }
+      }, 5000);
+
+      return toast;
+    }
+
+    function dispositionAllInQueue(queue, action) {
+      if (!currentInspectionData || !currentInspectionData.candidates) return;
+      const count = currentInspectionData.candidates.filter(c => c.triage.queue === queue).length;
+      if (count === 0) {
+        showToast(`No defects in ${queue} queue to disposition.`, 'info');
+        return;
+      }
+      sfx.playNeutral();
+      showToast(`Batch Disposition: All ${count} defects in ${queue} queue set to ${action}.`, 'success');
+    }
+
+    // -------------------------------------------------------------
+    // Keyboard Hotkeys
+    // -------------------------------------------------------------
+    function initKeyboardHotkeys() {
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') {
+          if (e.key === 'Enter') executeInspection();
+          return;
+        }
+
+        // Ctrl+Z Undo
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+          e.preventDefault();
+          undoLatestDisposition();
+          return;
+        }
+
+        const key = e.key.toLowerCase();
+
+        if (key === 'enter') {
+          e.preventDefault();
+          executeInspection();
+        } else if (key === 't') {
+          e.preventDefault();
+          toggleTemplateMode();
+        } else if (key === 'z' || key === 'escape') {
+          e.preventDefault();
+          resetZoom();
+        } else if (key === '?' || (e.shiftKey && key === '/')) {
+          e.preventDefault();
+          openHotkeysModal();
+        } else if (key === '1') {
+          filterQueueList('RED');
+        } else if (key === '2') {
+          filterQueueList('YELLOW');
+        } else if (key === '3') {
+          filterQueueList('GREEN');
+        } else if (key === 'j' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          navigateDefect(1);
+        } else if (key === 'k' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          navigateDefect(-1);
+        } else if (key === 'a' || e.key === ' ') {
+          e.preventDefault();
+          if (selectedCandidateIndex !== -1 && currentInspectionData) {
+            scheduleDisposition(currentInspectionData.board_id, selectedCandidateIndex, 'APPROVE');
+          }
+        } else if (key === 'r' || key === 'x') {
+          e.preventDefault();
+          if (selectedCandidateIndex !== -1 && currentInspectionData) {
+            scheduleDisposition(currentInspectionData.board_id, selectedCandidateIndex, 'REJECT');
+          }
+        } else if (key === 'w') {
+          e.preventDefault();
+          if (selectedCandidateIndex !== -1 && currentInspectionData) {
+            scheduleDisposition(currentInspectionData.board_id, selectedCandidateIndex, 'REWORK');
+          }
+        } else if (key === 'f') {
+          e.preventDefault();
+          if (selectedCandidateIndex !== -1 && currentInspectionData) {
+            scheduleDisposition(currentInspectionData.board_id, selectedCandidateIndex, 'SEND_TO_FPT');
+          }
+        }
+      });
+    }
+
+    function navigateDefect(step) {
+      if (!currentInspectionData || !currentInspectionData.candidates || currentInspectionData.candidates.length === 0) return;
+      const total = currentInspectionData.candidates.length;
+      let next = selectedCandidateIndex + step;
+      if (next < 0) next = total - 1;
+      if (next >= total) next = 0;
+      selectCandidateBox(next);
+      sfx.playNeutral();
+    }
+
+    // -------------------------------------------------------------
+    // General Toasts & Modals
+    // -------------------------------------------------------------
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const colors = {
+        success: 'bg-emerald-950/90 border-emerald-800 text-emerald-300',
+        error: 'bg-red-950/90 border-red-800 text-red-300',
+        info: 'bg-blue-950/90 border-blue-800 text-blue-300'
+      };
+      const icons = { success: 'check_circle', error: 'error', info: 'info' };
+
+      toast.className = `toast-anim pointer-events-auto flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg border shadow-2xl text-xs font-mono backdrop-blur max-w-sm ${colors[type] || colors.info}`;
+      toast.innerHTML = `
+        <span class="material-symbols-outlined text-base shrink-0">${icons[type] || 'info'}</span>
+        <span class="truncate">${msg}</span>
+      `;
+
+      container.appendChild(toast);
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(-10px)';
+          toast.style.transition = 'all 0.25s ease';
+          setTimeout(() => toast.remove(), 250);
+        }
+      }, 3000);
+    }
+
+    function openHotkeysModal() { document.getElementById('hotkeys-modal').classList.remove('hidden'); sfx.playNeutral(); }
+    function closeHotkeysModal() { document.getElementById('hotkeys-modal').classList.add('hidden'); }
+    function openUploadModal() { document.getElementById('upload-modal').classList.remove('hidden'); sfx.playNeutral(); }
+    function closeUploadModal() { document.getElementById('upload-modal').classList.add('hidden'); }
+
+    async function submitCustomUpload() {
+      const testFile = document.getElementById('upload-test-file').files[0];
+      const tempFile = document.getElementById('upload-temp-file').files[0];
+
+      if (!testFile || !tempFile) {
+        showToast('Please select both a Test Image and a Golden Template Image.', 'error');
+        return;
+      }
+
+      closeUploadModal();
+      showToast('Uploading custom board pair for YOLO11n + Topological Inspection...', 'info');
+
+      try {
+        const formData = new FormData();
+        formData.append('test_file', testFile);
+        formData.append('temp_file', tempFile);
+        formData.append('alpha', document.getElementById('alpha-slider').value);
+        formData.append('calibrator', document.getElementById('calibrator-select').value);
+
+        const resp = await fetch('/api/inspect', { method: 'POST', body: formData });
+        if (!resp.ok) throw new Error('Upload inspection failed: ' + resp.statusText);
+
+        const data = await resp.json();
+        currentInspectionData = data;
+
+        if (data.raw_test_image) {
+          imgTest.src = data.raw_test_image;
+          imgTest.onload = () => { imagesLoaded.test = true; renderMainCanvas(); };
+        }
+        if (data.raw_template_image) {
+          imgTemp.src = data.raw_template_image;
+          imgTemp.onload = () => { imagesLoaded.temp = true; };
+        }
+        if (data.overlay_image) {
+          imgAnnotated.src = data.overlay_image;
+          imgAnnotated.onload = () => {
+            imagesLoaded.overlay = true;
+            setDisplayMode('annotated');
+          };
+        }
+
+        renderInspectionResults(data);
+        showToast(`Custom Board Inspected: ${data.summary.total_candidates} Findings`, 'success');
+      } catch (e) {
+        showToast(`Upload Error: ${e.message}`, 'error');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Audit Report Export
+    // -------------------------------------------------------------
+    function exportAuditReport() {
+      if (!currentInspectionData) {
+        showToast('No active inspection data to export. Run an inspection first.', 'info');
+        return;
+      }
+
+      const rows = [
+        ['Board ID', currentInspectionData.board_id],
+        ['Timestamp', currentInspectionData.timestamp],
+        ['Conformal Alpha', currentInspectionData.parameters.alpha],
+        ['Calibrator', currentInspectionData.parameters.calibrator],
+        ['Total Detections', currentInspectionData.summary.total_candidates],
+        ['Red Queue (Critical)', currentInspectionData.summary.red_queue_critical],
+        ['Yellow Queue (Borderline)', currentInspectionData.summary.yellow_queue_borderline],
+        ['Green Queue (Bypassed)', currentInspectionData.summary.green_queue_bypassed],
+        ['Workload Reduction %', currentInspectionData.summary.workload_reduction_pct],
+        ['Total Pipeline ms', currentInspectionData.timing.total_pipeline_ms],
+        [],
+        ['Defect ID', 'Class', 'Confidence', 'Queue', 'Risk Score', 'Severed Open', 'Bridge Short', 'Missing Pixels', 'Excess Pixels', 'Action']
+      ];
+
+      currentInspectionData.candidates.forEach((c, i) => {
+        rows.push([
+          `#DF-${i+1}`,
+          c.class_name,
+          c.confidence.toFixed(3),
+          c.triage.queue,
+          c.triage.risk_score,
+          c.topological_features.g_open,
+          c.topological_features.g_short,
+          c.topological_features.missing_pixels,
+          c.topological_features.excess_pixels,
+          `"${c.triage.action}"`
+        ]);
+      });
+
+      const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `PCBRisk_Audit_${currentInspectionData.board_id}_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      sfx.playNeutral();
+      showToast(`Exported IPC-A-610 Inspection Dossier (CSV)`, 'success');
+    }
+
+    // -------------------------------------------------------------
+    // Results & History Tables
+    // -------------------------------------------------------------
+    function populateResultsTable(data) {
+      document.getElementById('results-board-id').textContent = `Board: ${data.board_id} (${data.timestamp})`;
+      const tbody = document.getElementById('results-table-body');
+      tbody.innerHTML = data.candidates.map((c, i) => {
+        const q = c.triage.queue;
+        const qBadge = q === 'RED' ? '<span class="px-2 py-0.5 rounded bg-red-950 text-red-400 border border-red-800 font-bold">RED</span>' : (q === 'YELLOW' ? '<span class="px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800 font-bold">YELLOW</span>' : '<span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold">GREEN</span>');
+        return `
+          <tr class="hover:bg-slate-800/50">
+            <td class="px-4 py-3">${qBadge}</td>
+            <td class="px-4 py-3 font-bold text-white">${c.class_name}</td>
+            <td class="px-4 py-3">${(c.confidence * 100).toFixed(1)}%</td>
+            <td class="px-4 py-3 ${c.topological_features.g_open ? 'text-red-400 font-bold' : 'text-slate-500'}">${c.topological_features.g_open} (${c.topological_features.missing_pixels}px)</td>
+            <td class="px-4 py-3 ${c.topological_features.g_short ? 'text-red-400 font-bold' : 'text-slate-500'}">${c.topological_features.g_short} (${c.topological_features.excess_pixels}px)</td>
+            <td class="px-4 py-3">${c.triage.risk_score} / ${c.triage.tau_threshold}</td>
+            <td class="px-4 py-3 text-slate-300">${c.triage.action}</td>
+            <td class="px-4 py-3">
+              <button onclick="scheduleDisposition('${data.board_id}', ${i}, 'APPROVE')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-[10px] mr-1">Pass (A)</button>
+              <button onclick="scheduleDisposition('${data.board_id}', ${i}, 'REJECT')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-red-400 rounded text-[10px]">Scrap (R)</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function loadHistory() {
+      try {
+        const resp = await fetch('/api/history');
+        if (!resp.ok) return;
+        const hist = await resp.json();
+        const tbody = document.getElementById('history-table-body');
+        if (hist.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-500">No inspections logged yet.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = hist.map(h => `
+          <tr class="hover:bg-slate-800/50">
+            <td class="px-4 py-3 text-slate-400">${h.timestamp}</td>
+            <td class="px-4 py-3 font-bold text-white">${h.board_id}</td>
+            <td class="px-4 py-3">${h.total_defects}</td>
+            <td class="px-4 py-3 text-red-400 font-bold">${h.red}</td>
+            <td class="px-4 py-3 text-amber-400 font-bold">${h.yellow}</td>
+            <td class="px-4 py-3 text-emerald-400 font-bold">${h.green}</td>
+            <td class="px-4 py-3 text-slate-400">${h.total_ms} ms</td>
+            <td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${h.status === 'FAIL_CRITICAL' ? 'bg-red-950 text-red-400 border border-red-800' : 'bg-emerald-950 text-emerald-400 border border-emerald-800'}">${h.status}</span></td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error('Failed to load history:', e);
+      }
+    }
+  </script>
+</body>
+</html>

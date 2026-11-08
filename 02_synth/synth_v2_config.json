@@ -1,0 +1,13 @@
+{
+ "version": "synth_v2",
+ "copper": "auto",
+ "min_area": 200,
+ "n_per_op": 1,
+ "max_tries": 8,
+ "ops": [
+  "op_break",
+  "op_bridge"
+ ],
+ "per_sample_seed": "[int(stem), op_idx, k]",
+ "manifest": "1f5bffd29c0d3b1e5cb6c9bc4c104da90fc646afc01c3e723118a54b65d5e9ce"
+}

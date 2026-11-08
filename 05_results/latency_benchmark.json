@@ -1,0 +1,31 @@
+{
+  "hardware": "CPU (Intel Core i5-1335U, 10-core / 12-thread)",
+  "onnx_detector": {
+    "model": "YOLO11n (640x640, ONNX opset 22/slimming)",
+    "mean_ms": 52.03096000070218,
+    "std_ms": 4.951689621576913,
+    "median_ms": 50.51400000229478,
+    "p95_ms": 62.2609949990874,
+    "throughput_fps": 19.219326339289236
+  },
+  "graph_engine_image_base": {
+    "operation": "Otsu binarization + 8-conn net labeling + differential morphological dilation (640x640)",
+    "mean_ms": 41.85118800087366,
+    "std_ms": 4.699783616859993,
+    "median_ms": 40.459700001520105,
+    "p95_ms": 52.72805498971137
+  },
+  "graph_engine_per_candidate_box": {
+    "operation": "Local neighborhood windowing + connected net pair splitting (_split_pairs)",
+    "mean_ms": 0.18553360074292868,
+    "std_ms": 0.1367730507556635,
+    "median_ms": 0.1870499982032925,
+    "p95_ms": 0.37902500480413437,
+    "p99_ms": 0.600782000110484
+  },
+  "typical_board_pipeline": {
+    "mean_boxes_per_board": 15.45,
+    "projected_total_pipeline_ms": 96.74864213305409,
+    "projected_fps": 10.336062377234656
+  }
+}

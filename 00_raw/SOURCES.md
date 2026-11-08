@@ -1,0 +1,1 @@
+- DeepPCB | https://github.com/tangsanli5201/DeepPCB | fetched 2026-10-06 | CHECK LICENSE + CITATION (Tang et al. 2019) before any publication/patent use

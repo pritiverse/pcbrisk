@@ -1,0 +1,20 @@
+{
+ "real_s42": [
+  {
+   "check": "1 Engine (held-out boards): strict acc open/short >= .85, false-flag <= .15  [0.64/0.74, 0.01]",
+   "passed": false
+  },
+  {
+   "check": "2 B (graph) beats image-only at alpha=.10 (worst-board), CI excludes 0 on one axis, not worse on the other",
+   "passed": true
+  },
+  {
+   "check": "3 Board shift: worst-board conformal keeps miss <= 1.25*alpha for B  [pooled 1.09x, worst-board 0.69x]",
+   "passed": true
+  },
+  {
+   "check": "4 Reference-free head C is not worse than template-based B (load diff <= .1, miss diff <= .01 vs B)",
+   "passed": false
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+{
+ "real|0.05|board-median": true,
+ "real|0.05|pooled": true,
+ "real|0.05|shift-inflated": true,
+ "real|0.05|worst-board": true,
+ "real|0.1|board-median": false,
+ "real|0.1|pooled": false,
+ "real|0.1|shift-inflated": false,
+ "real|0.1|worst-board": true,
+ "synth1|0.05|board-median": true,
+ "synth1|0.05|pooled": true,
+ "synth1|0.05|shift-inflated": true,
+ "synth1|0.05|worst-board": true,
+ "synth1|0.1|board-median": false,
+ "synth1|0.1|pooled": false,
+ "synth1|0.1|shift-inflated": false,
+ "synth1|0.1|worst-board": false
+}

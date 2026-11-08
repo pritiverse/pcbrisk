@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PCB Defect Detection - Inspection History</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error-container": "#93000a",
+            "surface-bright": "#faf8ff",
+            "secondary-fixed-dim": "#b9c7e0",
+            "on-background": "#131b2e",
+            "on-error": "#ffffff",
+            "on-primary-container": "#eeefff",
+            "primary-container": "#2563eb",
+            "tertiary-fixed": "#ffdad6",
+            "surface-tint": "#0053db",
+            "primary-fixed-dim": "#b4c5ff",
+            "tertiary-fixed-dim": "#ffb4ab",
+            "on-primary": "#ffffff",
+            "outline-variant": "#c3c6d7",
+            "surface-container": "#eaedff",
+            "error": "#ba1a1a",
+            "surface-container-highest": "#dae2fd",
+            "on-secondary-fixed-variant": "#3a485c",
+            "secondary-container": "#d5e3fd",
+            "on-surface": "#131b2e",
+            "surface-container-low": "#f2f3ff",
+            "secondary": "#515f74",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed-variant": "#93000b",
+            "secondary-fixed": "#d5e3fd",
+            "surface-dim": "#d2d9f4",
+            "on-tertiary": "#ffffff",
+            "primary-fixed": "#dbe1ff",
+            "on-primary-fixed": "#00174b",
+            "tertiary": "#ae0010",
+            "primary": "#004ac6",
+            "on-tertiary-container": "#ffecea",
+            "on-tertiary-fixed": "#410002",
+            "tertiary-container": "#d52022",
+            "inverse-surface": "#283044",
+            "on-secondary-container": "#57657b",
+            "inverse-on-surface": "#eef0ff",
+            "outline": "#737686",
+            "surface-variant": "#dae2fd",
+            "surface": "#faf8ff",
+            "surface-container-high": "#e2e7ff",
+            "on-surface-variant": "#434655",
+            "on-secondary-fixed": "#0d1c2f",
+            "surface-container-lowest": "#ffffff",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#b4c5ff",
+            "background": "#faf8ff",
+            "on-primary-fixed-variant": "#003ea8"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter": "0.75rem",
+            "margin": "1rem",
+            "gutter-desktop": "1rem",
+            "space-lg": "1rem",
+            "space-md": "0.75rem",
+            "margin-desktop": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xl": "1.5rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "headline-xl": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "code-mono": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="h-full bg-background text-on-surface antialiased flex overflow-hidden font-body-md">
+<!-- ==================== SIDEBAR ==================== -->
+<aside class="w-60 bg-surface-container-lowest flex flex-col justify-between h-full border-r border-outline-variant flex-shrink-0 z-20">
+<div class="flex flex-col">
+<!-- App Header Branding -->
+<div class="h-16 flex items-center gap-2.5 px-4 border-b border-outline-variant">
+<div class="w-7 h-7 bg-primary text-on-primary rounded flex items-center justify-center font-code-mono text-label-md font-semibold tracking-tight shadow-sm">
+          AOI
+        </div>
+<div>
+<h1 class="text-label-md font-semibold text-on-surface leading-tight">PCB Defect Detection</h1>
+<p class="text-[11px] text-secondary font-mono">Inspection System</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="p-3 flex flex-col gap-1">
+<!-- Overview -->
+<a class="flex items-center gap-2.5 px-3 py-2 text-secondary hover:text-on-surface hover:bg-surface-container-low transition-colors rounded text-label-md font-medium" href="/overview">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span>Overview</span>
+</a>
+<!-- Inspect PCB -->
+<a class="flex items-center gap-2.5 px-3 py-2 text-secondary hover:text-on-surface hover:bg-surface-container-low transition-colors rounded text-label-md font-medium" href="/workspace">
+<span class="material-symbols-outlined text-[18px]">biotech</span>
+<span>Inspect PCB</span>
+</a>
+<!-- Results -->
+<a class="flex items-center gap-2.5 px-3 py-2 text-secondary hover:text-on-surface hover:bg-surface-container-low transition-colors rounded text-label-md font-medium" href="/results">
+<span class="material-symbols-outlined text-[18px]">fact_check</span>
+<span>Results</span>
+</a>
+<!-- Model Evaluation -->
+<a class="flex items-center gap-2.5 px-3 py-2 text-secondary hover:text-on-surface hover:bg-surface-container-low transition-colors rounded text-label-md font-medium" href="/evaluation">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+<span>Model Evaluation</span>
+</a>
+<!-- History (Active Match) -->
+<a class="flex items-center gap-2.5 px-3 py-2 bg-secondary-container text-primary font-semibold rounded border-l-2 border-primary text-label-md" href="/history">
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">history</span>
+<span>History</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Bottom / User Status -->
+<div class="p-3 border-t border-outline-variant">
+<div class="flex items-center justify-between text-body-sm bg-surface-container-low rounded px-3 py-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500 inline-block ring-2 ring-emerald-200"></span>
+<span class="font-medium text-on-surface text-label-md">User A</span>
+<span class="text-secondary text-[10px]">•</span>
+<span class="text-secondary text-body-sm">Ready</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">radio_button_checked</span>
+</div>
+</div>
+</aside>
+<!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+<main class="flex-1 flex flex-col h-full min-w-0 bg-background overflow-hidden">
+<!-- Top Header -->
+<header class="flex items-center justify-between px-6 py-4 bg-surface-container-lowest border-b border-outline-variant flex-shrink-0">
+<div>
+<h2 class="text-headline-md font-semibold text-on-surface tracking-tight">Inspection History</h2>
+<p class="text-body-sm text-secondary mt-0.5">Audit log and archive of historical PCB inspection passes</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="inline-flex items-center gap-2 h-9 px-3.5 bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low text-on-surface rounded text-label-md font-medium transition-colors shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">download</span>
+<span>Export CSV</span>
+</button>
+</div>
+</header>
+<!-- 1. Search & Filter Bar -->
+<section class="bg-surface-container-lowest border-b border-outline-variant px-6 py-3 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+<div class="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
+<!-- Search Input -->
+<div class="relative flex-1 min-w-[240px] max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input class="w-full h-9 pl-9 pr-3 bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded text-body-sm text-on-surface placeholder:text-outline outline-none transition-colors" placeholder="Search by image filename, board ID, or lot..." type="text"/>
+</div>
+<!-- Severity Filter -->
+<div class="relative">
+<select class="h-9 pl-3 pr-8 bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded text-body-sm text-on-surface outline-none cursor-pointer appearance-none">
+<option value="all">All Severities</option>
+<option value="critical">Critical Only</option>
+<option value="warnings">Warnings</option>
+<option value="clean">Clean Passes</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[16px]">expand_more</span>
+</div>
+<!-- Date Range Selector -->
+<div class="inline-flex items-center gap-2 h-9 px-3 bg-surface border border-outline-variant rounded text-on-surface text-body-sm cursor-pointer hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-secondary text-[16px]">calendar_today</span>
+<span class="font-medium text-body-sm">Oct 1, 2024 – Oct 28, 2024</span>
+<span class="material-symbols-outlined text-outline text-[16px]">expand_more</span>
+</div>
+<!-- Status Filter -->
+<div class="relative">
+<select class="h-9 pl-3 pr-8 bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded text-body-sm text-on-surface outline-none cursor-pointer appearance-none">
+<option value="all">All Statuses</option>
+<option value="passed">Passed</option>
+<option value="flagged">Flagged Rework</option>
+<option value="reviewed">Reviewed</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[16px]">expand_more</span>
+</div>
+</div>
+<div class="text-body-sm text-secondary flex items-center gap-1.5 flex-shrink-0">
+<span>Recorded:</span>
+<span class="font-code-mono font-semibold text-on-surface">128 passes</span>
+</div>
+</section>
+<!-- 2. Searchable History Table -->
+<div class="flex-1 min-h-0 flex flex-col bg-surface-container-lowest overflow-hidden">
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse min-w-[960px]">
+<thead class="sticky top-0 bg-surface z-10 border-b border-outline-variant shadow-sm">
+<tr class="text-[11px] font-semibold text-secondary uppercase tracking-wider">
+<th class="py-3 px-6 w-20">PCB Thumbnail</th>
+<th class="py-3 px-6">Filename / Identifier</th>
+<th class="py-3 px-6">Inspection Timestamp</th>
+<th class="py-3 px-6">Defects Detected</th>
+<th class="py-3 px-6">Highest Severity</th>
+<th class="py-3 px-6">Inspection Status</th>
+<th class="py-3 px-6 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant text-body-sm font-normal">
+<!-- Row 1: pcb_sample_094.jpg -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-outline-variant overflow-hidden bg-surface flex-shrink-0">
+<img alt="pcb_sample_094 thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6">
+<div class="font-code-mono font-medium text-on-surface">pcb_sample_094.jpg</div>
+<div class="text-[11px] text-secondary font-code-mono mt-0.5">SN: 2024-AOI-9041</div>
+</td>
+<td class="py-3.5 px-6 text-secondary font-code-mono">Oct 28, 2024 • 14:32:05</td>
+<td class="py-3.5 px-6">
+<span class="font-code-mono font-medium text-on-surface">4 Defects</span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-label-sm font-code-mono font-medium bg-red-50 text-red-700 border border-red-200">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>Critical
+                </span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-label-sm font-medium bg-rose-50 text-rose-700 border border-rose-200">
+                  Flagged Rework
+                </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<button class="inline-flex items-center gap-1.5 text-primary hover:text-primary-container font-medium text-label-md transition-colors hover:underline">
+<span>View Results</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: pcb_sample_093.jpg -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-outline-variant overflow-hidden bg-surface flex-shrink-0">
+<img alt="pcb_sample_093 thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6">
+<div class="font-code-mono font-medium text-on-surface">pcb_sample_093.jpg</div>
+<div class="text-[11px] text-secondary font-code-mono mt-0.5">SN: 2024-AOI-9038</div>
+</td>
+<td class="py-3.5 px-6 text-secondary font-code-mono">Oct 28, 2024 • 14:28:11</td>
+<td class="py-3.5 px-6">
+<span class="font-code-mono font-medium text-on-surface">1 Defect</span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-label-sm font-code-mono font-medium bg-amber-50 text-amber-700 border border-amber-200">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>Warning
+                </span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-label-sm font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                  Reviewed
+                </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<button class="inline-flex items-center gap-1.5 text-primary hover:text-primary-container font-medium text-label-md transition-colors hover:underline">
+<span>View Results</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: pcb_board_088.png -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-outline-variant overflow-hidden bg-surface flex-shrink-0">
+<img alt="pcb_board_088 thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6">
+<div class="font-code-mono font-medium text-on-surface">pcb_board_088.png</div>
+<div class="text-[11px] text-secondary font-code-mono mt-0.5">SN: 2024-AOI-9014</div>
+</td>
+<td class="py-3.5 px-6 text-secondary font-code-mono">Oct 28, 2024 • 14:15:40</td>
+<td class="py-3.5 px-6">
+<span class="font-code-mono font-medium text-on-surface">0 Defects</span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-label-sm font-code-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>Clean
+                </span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-label-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  Passed
+                </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<button class="inline-flex items-center gap-1.5 text-primary hover:text-primary-container font-medium text-label-md transition-colors hover:underline">
+<span>View Results</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: pcb_sample_092.jpg -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-outline-variant overflow-hidden bg-surface flex-shrink-0">
+<img alt="pcb_sample_092 thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6">
+<div class="font-code-mono font-medium text-on-surface">pcb_sample_092.jpg</div>
+<div class="text-[11px] text-secondary font-code-mono mt-0.5">SN: 2024-AOI-8992</div>
+</td>
+<td class="py-3.5 px-6 text-secondary font-code-mono">Oct 28, 2024 • 14:02:18</td>
+<td class="py-3.5 px-6">
+<span class="font-code-mono font-medium text-on-surface">3 Defects</span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-label-sm font-code-mono font-medium bg-red-50 text-red-700 border border-red-200">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>Critical
+                </span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-label-sm font-medium bg-rose-50 text-rose-700 border border-rose-200">
+                  Flagged Rework
+                </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<button class="inline-flex items-center gap-1.5 text-primary hover:text-primary-container font-medium text-label-md transition-colors hover:underline">
+<span>View Results</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: pcb_sample_091.jpg -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-outline-variant overflow-hidden bg-surface flex-shrink-0">
+<img alt="pcb_sample_091 thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6">
+<div class="font-code-mono font-medium text-on-surface">pcb_sample_091.jpg</div>
+<div class="text-[11px] text-secondary font-code-mono mt-0.5">SN: 2024-AOI-8974</div>
+</td>
+<td class="py-3.5 px-6 text-secondary font-code-mono">Oct 28, 2024 • 13:49:52</td>
+<td class="py-3.5 px-6">
+<span class="font-code-mono font-medium text-on-surface">1 Defect</span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-label-sm font-code-mono font-medium bg-slate-100 text-slate-700 border border-slate-300">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>Minor
+                </span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-label-sm font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                  Reviewed
+                </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<button class="inline-flex items-center gap-1.5 text-primary hover:text-primary-container font-medium text-label-md transition-colors hover:underline">
+<span>View Results</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 6: pcb_sample_090.jpg -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-outline-variant overflow-hidden bg-surface flex-shrink-0">
+<img alt="pcb_sample_090 thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6">
+<div class="font-code-mono font-medium text-on-surface">pcb_sample_090.jpg</div>
+<div class="text-[11px] text-secondary font-code-mono mt-0.5">SN: 2024-AOI-8949</div>
+</td>
+<td class="py-3.5 px-6 text-secondary font-code-mono">Oct 28, 2024 • 13:31:04</td>
+<td class="py-3.5 px-6">
+<span class="font-code-mono font-medium text-on-surface">2 Defects</span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-label-sm font-code-mono font-medium bg-red-50 text-red-700 border border-red-200">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>Critical
+                </span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-label-sm font-medium bg-rose-50 text-rose-700 border border-rose-200">
+                  Flagged Rework
+                </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<button class="inline-flex items-center gap-1.5 text-primary hover:text-primary-container font-medium text-label-md transition-colors hover:underline">
+<span>View Results</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 7: pcb_sample_089.jpg -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-outline-variant overflow-hidden bg-surface flex-shrink-0">
+<img alt="pcb_sample_089 thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6">
+<div class="font-code-mono font-medium text-on-surface">pcb_sample_089.jpg</div>
+<div class="text-[11px] text-secondary font-code-mono mt-0.5">SN: 2024-AOI-8921</div>
+</td>
+<td class="py-3.5 px-6 text-secondary font-code-mono">Oct 28, 2024 • 13:14:29</td>
+<td class="py-3.5 px-6">
+<span class="font-code-mono font-medium text-on-surface">0 Defects</span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-label-sm font-code-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>Clean
+                </span>
+</td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-label-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  Passed
+                </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<button class="inline-flex items-center gap-1.5 text-primary hover:text-primary-container font-medium text-label-md transition-colors hover:underline">
+<span>View Results</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- 3. Pagination Bar -->
+<footer class="h-12 px-6 border-t border-outline-variant flex items-center justify-between bg-surface-container-lowest flex-shrink-0">
+<div class="text-body-sm text-secondary">
+          Showing <span class="font-medium text-on-surface">1–7</span> of <span class="font-medium text-on-surface">128</span> recorded inspections
+        </div>
+<div class="flex items-center gap-1.5">
+<button class="inline-flex items-center gap-1 h-8 px-2.5 border border-outline-variant rounded text-label-md text-secondary hover:text-on-surface hover:bg-surface-container-low transition-colors disabled:opacity-40 disabled:pointer-events-none" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+<span>Prev</span>
+</button>
+<div class="flex items-center gap-1 px-1">
+<button class="w-7 h-7 flex items-center justify-center rounded text-label-sm bg-primary text-on-primary font-semibold">1</button>
+<button class="w-7 h-7 flex items-center justify-center rounded text-label-sm text-secondary hover:bg-surface-container-low font-medium">2</button>
+<button class="w-7 h-7 flex items-center justify-center rounded text-label-sm text-secondary hover:bg-surface-container-low font-medium">3</button>
+<span class="px-1 text-secondary text-body-sm leading-none">...</span>
+<button class="w-7 h-7 flex items-center justify-center rounded text-label-sm text-secondary hover:bg-surface-container-low font-medium">19</button>
+</div>
+<button class="inline-flex items-center gap-1 h-8 px-2.5 border border-outline-variant rounded text-label-md text-secondary hover:text-on-surface hover:bg-surface-container-low transition-colors">
+<span>Next</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</footer>
+</div>
+</main>
+</body></html>

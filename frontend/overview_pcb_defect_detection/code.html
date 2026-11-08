@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-slate-50" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PCB Defect Detection - Overview</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+          mono: ['JetBrains Mono', 'monospace'],
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="h-full text-slate-800 antialiased font-sans flex bg-slate-50 overflow-hidden">
+<!-- Slim Left Sidebar (w-60, border-r border-slate-200, bg-white) -->
+<aside class="w-60 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 h-screen select-none z-20">
+<div class="flex flex-col">
+<!-- Brand Title Header -->
+<div class="h-16 px-5 border-b border-slate-100 flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-lg">memory</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-semibold text-slate-900 text-sm tracking-tight truncate leading-tight">PCB Defect Detection</span>
+<span class="text-[11px] text-slate-400 font-medium">Inspection System</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="p-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-md bg-blue-50 text-blue-600 font-semibold text-sm transition-colors" href="/overview">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+<span>Overview</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors" href="/workspace">
+<span class="material-symbols-outlined text-lg">biotech</span>
+<span>Inspect PCB</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors" href="/results">
+<span class="material-symbols-outlined text-lg">fact_check</span>
+<span>Results</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors" href="/evaluation">
+<span class="material-symbols-outlined text-lg">analytics</span>
+<span>Model Evaluation</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors" href="/history">
+<span class="material-symbols-outlined text-lg">history</span>
+<span>History</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Status -->
+<div class="p-4 border-t border-slate-100 flex items-center justify-between bg-white">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+<span class="text-xs text-slate-600 font-medium">User A ● Ready</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Layout Area -->
+<div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-slate-50">
+<!-- Top Header -->
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between shrink-0">
+<h1 class="text-xl font-bold text-slate-900 tracking-tight">Overview</h1>
+<div>
+<button class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-base">add</span>
+          Inspect New PCB
+        </button>
+</div>
+</header>
+<!-- Scrollable Body Workspace -->
+<main class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- 1. Top Summary Metrics (4 clean compact white cards with subtle borders) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Metric 1: PCBs Inspected -->
+<div class="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
+<div class="flex items-center justify-between text-slate-500 mb-2">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-400">PCBs Inspected</span>
+<span class="material-symbols-outlined text-lg text-slate-400">developer_board</span>
+</div>
+<div class="text-3xl font-bold text-slate-900 tracking-tight">128</div>
+</div>
+<!-- Metric 2: Defects Detected -->
+<div class="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
+<div class="flex items-center justify-between text-slate-500 mb-2">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Defects Detected</span>
+<span class="material-symbols-outlined text-lg text-slate-400">error_outline</span>
+</div>
+<div class="text-3xl font-bold text-slate-900 tracking-tight">43</div>
+</div>
+<!-- Metric 3: Boards Requiring Review -->
+<div class="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
+<div class="flex items-center justify-between text-slate-500 mb-2">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Boards Requiring Review</span>
+<span class="material-symbols-outlined text-lg text-amber-500">warning</span>
+</div>
+<div class="text-3xl font-bold text-rose-600 tracking-tight">14</div>
+</div>
+<!-- Metric 4: Pass Rate -->
+<div class="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
+<div class="flex items-center justify-between text-slate-500 mb-2">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Pass Rate</span>
+<span class="material-symbols-outlined text-lg text-emerald-500">check_circle</span>
+</div>
+<div class="text-3xl font-bold text-slate-900 tracking-tight">89.1%</div>
+</div>
+</section>
+<!-- 2. Recent Inspections Section -->
+<section class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+<h2 class="text-base font-semibold text-slate-900">Recent Inspections</h2>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse text-sm">
+<thead>
+<tr class="bg-slate-50/75 border-b border-slate-200 text-xs font-semibold uppercase tracking-wider text-slate-500">
+<th class="py-3 px-6 w-20">Thumbnail</th>
+<th class="py-3 px-6">Filename</th>
+<th class="py-3 px-6">Inspection Date &amp; Timestamp</th>
+<th class="py-3 px-6 text-center">Defects</th>
+<th class="py-3 px-6">Highest Severity</th>
+<th class="py-3 px-6 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-slate-200 overflow-hidden bg-slate-100 shrink-0">
+<img alt="PCB Thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6 font-mono text-xs font-medium text-slate-900">
+                  pcb_sample_094.jpg
+                </td>
+<td class="py-3.5 px-6 font-mono text-xs text-slate-600">
+                  2025-05-18 14:32:09
+                </td>
+<td class="py-3.5 px-6 text-center font-mono font-medium text-rose-600">
+                  3
+                </td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+                    Critical
+                  </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<a class="text-blue-600 hover:text-blue-800 font-medium text-xs hover:underline inline-flex items-center gap-1" href="#">
+                    View Results
+                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-slate-200 overflow-hidden bg-slate-100 shrink-0">
+<img alt="PCB Thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6 font-mono text-xs font-medium text-slate-900">
+                  pcb_sample_093.jpg
+                </td>
+<td class="py-3.5 px-6 font-mono text-xs text-slate-600">
+                  2025-05-18 14:28:44
+                </td>
+<td class="py-3.5 px-6 text-center font-mono font-medium text-amber-600">
+                  2
+                </td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    Warning
+                  </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<a class="text-blue-600 hover:text-blue-800 font-medium text-xs hover:underline inline-flex items-center gap-1" href="#">
+                    View Results
+                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-slate-200 overflow-hidden bg-slate-100 shrink-0">
+<img alt="PCB Thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6 font-mono text-xs font-medium text-slate-900">
+                  pcb_sample_092.jpg
+                </td>
+<td class="py-3.5 px-6 font-mono text-xs text-slate-600">
+                  2025-05-18 14:15:30
+                </td>
+<td class="py-3.5 px-6 text-center font-mono font-medium text-slate-700">
+                  1
+                </td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                    Minor
+                  </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<a class="text-blue-600 hover:text-blue-800 font-medium text-xs hover:underline inline-flex items-center gap-1" href="#">
+                    View Results
+                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-slate-200 overflow-hidden bg-slate-100 shrink-0">
+<img alt="PCB Thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6 font-mono text-xs font-medium text-slate-900">
+                  pcb_sample_091.jpg
+                </td>
+<td class="py-3.5 px-6 font-mono text-xs text-slate-600">
+                  2025-05-18 14:02:11
+                </td>
+<td class="py-3.5 px-6 text-center font-mono font-medium text-emerald-600">
+                  0
+                </td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Clean
+                  </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<a class="text-blue-600 hover:text-blue-800 font-medium text-xs hover:underline inline-flex items-center gap-1" href="#">
+                    View Results
+                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-3.5 px-6">
+<div class="w-10 h-10 rounded border border-slate-200 overflow-hidden bg-slate-100 shrink-0">
+<img alt="PCB Thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VM13-5bTP1-e1MfZMOZ6iPiTUcCGl4RnVrAlylitDZToQRccfSrQvKaSJ1iCjnFTOBWCkAACVK87aiw9nH1Dm1Ei6pfvVC3DgQA6OhBj6ySgnfm-4P1QQQVZmNBwwEH3cVadeGl8ps89WS1z4DZ56lPgEHPNaxZru9greq-_p3GbWZp4ZjBqlLsHetmvrc2UqQRd0vUu1dZFZcAtLy6cDS7viqYxaQxVCq2gNabCbvz8f8DoLwlAJfLzo"/>
+</div>
+</td>
+<td class="py-3.5 px-6 font-mono text-xs font-medium text-slate-900">
+                  pcb_sample_090.jpg
+                </td>
+<td class="py-3.5 px-6 font-mono text-xs text-slate-600">
+                  2025-05-18 13:45:52
+                </td>
+<td class="py-3.5 px-6 text-center font-mono font-medium text-rose-600">
+                  2
+                </td>
+<td class="py-3.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+                    Critical
+                  </span>
+</td>
+<td class="py-3.5 px-6 text-right">
+<a class="text-blue-600 hover:text-blue-800 font-medium text-xs hover:underline inline-flex items-center gap-1" href="#">
+                    View Results
+                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Clean Pagination Footer -->
+<div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+<span>Showing 1–5 of 128 inspections</span>
+<div class="flex items-center gap-1">
+<button class="px-2.5 py-1.5 rounded border border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50 disabled:opacity-50 transition-colors" disabled="">
+              Previous
+            </button>
+<button class="px-2.5 py-1.5 rounded bg-blue-50 text-blue-600 font-semibold border border-blue-200">
+              1
+            </button>
+<button class="px-2.5 py-1.5 rounded border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors">
+              2
+            </button>
+<button class="px-2.5 py-1.5 rounded border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors">
+              3
+            </button>
+<button class="px-2.5 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">
+              Next
+            </button>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

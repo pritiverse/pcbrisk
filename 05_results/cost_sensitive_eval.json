@@ -1,0 +1,282 @@
+[
+  {
+    "method": "pooled",
+    "alpha": 0.05,
+    "policy_A0": {
+      "load": 6.368888888888889,
+      "miss_rate": 0.05317092034029389,
+      "reviews_per_1k": 6368.888888888889,
+      "escapes_per_1k": 122.22222222222221
+    },
+    "policy_A": {
+      "load": 5.714444444444444,
+      "miss_rate": 0.05520108275328693,
+      "reviews_per_1k": 5714.444444444444,
+      "escapes_per_1k": 126.88888888888889
+    },
+    "policy_B": {
+      "load": 4.191777777777777,
+      "miss_rate": 0.05268754833720031,
+      "reviews_per_1k": 4191.777777777777,
+      "escapes_per_1k": 121.11111111111111
+    },
+    "d_load_vs_A0": -2.1771111111111114,
+    "rel_load_pct_vs_A0": -34.18353105373343,
+    "d_load_vs_A": -1.5226666666666668,
+    "rel_load_pct_vs_A": -26.64592650204161,
+    "breakeven_vs_A0": "Strict Dominance (Fewer reviews & Fewer escapes)",
+    "breakeven_vs_A": "Strict Dominance (Fewer reviews & Fewer escapes)",
+    "cost_scenarios": {
+      "R_50": {
+        "ratio": 50,
+        "cost_a0": 12480.0,
+        "cost_a": 12058.888888888889,
+        "cost_b": 10247.333333333332,
+        "pct_savings_vs_a0": 17.889957264957275,
+        "pct_savings_vs_a": 15.022574403390776
+      },
+      "R_100": {
+        "ratio": 100,
+        "cost_a0": 18591.11111111111,
+        "cost_a": 18403.333333333332,
+        "cost_b": 16302.888888888889,
+        "pct_savings_vs_a0": 12.308152043987562,
+        "pct_savings_vs_a": 11.413391293847729
+      },
+      "R_250": {
+        "ratio": 250,
+        "cost_a0": 36924.444444444445,
+        "cost_a": 37436.666666666664,
+        "cost_b": 34469.555555555555,
+        "pct_savings_vs_a0": 6.648411169956672,
+        "pct_savings_vs_a": 7.925681892381204
+      },
+      "R_500": {
+        "ratio": 500,
+        "cost_a0": 67480.0,
+        "cost_a": 69158.88888888889,
+        "cost_b": 64747.33333333333,
+        "pct_savings_vs_a0": 4.049594941711131,
+        "pct_savings_vs_a": 6.378869913082605
+      },
+      "R_1000": {
+        "ratio": 1000,
+        "cost_a0": 128591.11111111111,
+        "cost_a": 132603.33333333334,
+        "cost_b": 125302.88888888889,
+        "pct_savings_vs_a0": 2.557114713303146,
+        "pct_savings_vs_a": 5.505475813411769
+      }
+    }
+  },
+  {
+    "method": "shift-inflated",
+    "alpha": 0.05,
+    "policy_A0": {
+      "load": 8.922222222222222,
+      "miss_rate": 0.04688708430007734,
+      "reviews_per_1k": 8922.222222222223,
+      "escapes_per_1k": 107.77777777777777
+    },
+    "policy_A": {
+      "load": 8.84511111111111,
+      "miss_rate": 0.04727378190255221,
+      "reviews_per_1k": 8845.111111111111,
+      "escapes_per_1k": 108.66666666666666
+    },
+    "policy_B": {
+      "load": 7.535111111111111,
+      "miss_rate": 0.04669373549883991,
+      "reviews_per_1k": 7535.111111111111,
+      "escapes_per_1k": 107.33333333333334
+    },
+    "d_load_vs_A0": -1.3871111111111114,
+    "rel_load_pct_vs_A0": -15.546699875467002,
+    "d_load_vs_A": -1.3099999999999996,
+    "rel_load_pct_vs_A": -14.810441424013263,
+    "breakeven_vs_A0": "Strict Dominance (Fewer reviews & Fewer escapes)",
+    "breakeven_vs_A": "Strict Dominance (Fewer reviews & Fewer escapes)",
+    "cost_scenarios": {
+      "R_50": {
+        "ratio": 50,
+        "cost_a0": 14311.111111111111,
+        "cost_a": 14278.444444444445,
+        "cost_b": 12901.777777777777,
+        "pct_savings_vs_a0": 9.847826086956527,
+        "pct_savings_vs_a": 9.641573156117232
+      },
+      "R_100": {
+        "ratio": 100,
+        "cost_a0": 19700.0,
+        "cost_a": 19711.777777777777,
+        "cost_b": 18268.444444444445,
+        "pct_savings_vs_a0": 7.266779469825151,
+        "pct_savings_vs_a": 7.322187524660941
+      },
+      "R_250": {
+        "ratio": 250,
+        "cost_a0": 35866.666666666664,
+        "cost_a": 36011.777777777774,
+        "cost_b": 34368.444444444445,
+        "pct_savings_vs_a0": 4.177199504337041,
+        "pct_savings_vs_a": 4.5633218761763
+      },
+      "R_500": {
+        "ratio": 500,
+        "cost_a0": 62811.11111111111,
+        "cost_a": 63178.44444444444,
+        "cost_b": 61201.77777777778,
+        "pct_savings_vs_a0": 2.562179373783824,
+        "pct_savings_vs_a": 3.128704234566627
+      },
+      "R_1000": {
+        "ratio": 1000,
+        "cost_a0": 116699.99999999999,
+        "cost_a": 117511.77777777777,
+        "cost_b": 114868.44444444445,
+        "pct_savings_vs_a0": 1.5694563458059412,
+        "pct_savings_vs_a": 2.249419916301518
+      }
+    }
+  },
+  {
+    "method": "worst-board",
+    "alpha": 0.05,
+    "policy_A0": {
+      "load": 12.099777777777778,
+      "miss_rate": 0.034899458623356534,
+      "reviews_per_1k": 12099.777777777777,
+      "escapes_per_1k": 80.22222222222223
+    },
+    "policy_A": {
+      "load": 9.95888888888889,
+      "miss_rate": 0.0352861562258314,
+      "reviews_per_1k": 9958.888888888889,
+      "escapes_per_1k": 81.1111111111111
+    },
+    "policy_B": {
+      "load": 8.089555555555556,
+      "miss_rate": 0.03634957463263728,
+      "reviews_per_1k": 8089.555555555556,
+      "escapes_per_1k": 83.55555555555554
+    },
+    "d_load_vs_A0": -4.010222222222222,
+    "rel_load_pct_vs_A0": -33.142941100846656,
+    "d_load_vs_A": -1.8693333333333335,
+    "rel_load_pct_vs_A": -18.770500948343187,
+    "breakeven_vs_A0": 1203.0666666666734,
+    "breakeven_vs_A": 764.7272727272733,
+    "cost_scenarios": {
+      "R_50": {
+        "ratio": 50,
+        "cost_a0": 16110.888888888889,
+        "cost_a": 14014.444444444443,
+        "cost_b": 12267.333333333332,
+        "pct_savings_vs_a0": 23.856880784562552,
+        "pct_savings_vs_a": 12.466502814556414
+      },
+      "R_100": {
+        "ratio": 100,
+        "cost_a0": 20122.0,
+        "cost_a": 18070.0,
+        "cost_b": 16445.11111111111,
+        "pct_savings_vs_a0": 18.272979270892012,
+        "pct_savings_vs_a": 8.992190862694468
+      },
+      "R_250": {
+        "ratio": 250,
+        "cost_a0": 32155.333333333336,
+        "cost_a": 30236.666666666664,
+        "cost_b": 28978.44444444444,
+        "pct_savings_vs_a0": 9.879819487349618,
+        "pct_savings_vs_a": 4.161246463087497
+      },
+      "R_500": {
+        "ratio": 500,
+        "cost_a0": 52210.88888888889,
+        "cost_a": 50514.44444444444,
+        "cost_b": 49867.33333333333,
+        "pct_savings_vs_a0": 4.488633703484599,
+        "pct_savings_vs_a": 1.2810417262389164
+      },
+      "R_1000": {
+        "ratio": 1000,
+        "cost_a0": 92322.00000000001,
+        "cost_a": 91069.99999999999,
+        "cost_b": 91645.11111111111,
+        "pct_savings_vs_a0": 0.733182652985101,
+        "pct_savings_vs_a": -0.6315044593292238
+      }
+    }
+  },
+  {
+    "method": "board-median",
+    "alpha": 0.05,
+    "policy_A0": {
+      "load": 2.7795555555555556,
+      "miss_rate": 0.08623356535189482,
+      "reviews_per_1k": 2779.5555555555557,
+      "escapes_per_1k": 198.22222222222223
+    },
+    "policy_A": {
+      "load": 2.939111111111111,
+      "miss_rate": 0.08778035576179427,
+      "reviews_per_1k": 2939.111111111111,
+      "escapes_per_1k": 201.77777777777777
+    },
+    "policy_B": {
+      "load": 2.542666666666667,
+      "miss_rate": 0.07018561484918794,
+      "reviews_per_1k": 2542.666666666667,
+      "escapes_per_1k": 161.33333333333331
+    },
+    "d_load_vs_A0": -0.2368888888888887,
+    "rel_load_pct_vs_A0": -8.522545570834659,
+    "d_load_vs_A": -0.39644444444444416,
+    "rel_load_pct_vs_A": -13.488583093905934,
+    "breakeven_vs_A0": "Strict Dominance (Fewer reviews & Fewer escapes)",
+    "breakeven_vs_A": "Strict Dominance (Fewer reviews & Fewer escapes)",
+    "cost_scenarios": {
+      "R_50": {
+        "ratio": 50,
+        "cost_a0": 12690.666666666668,
+        "cost_a": 13028.0,
+        "cost_b": 10609.333333333332,
+        "pct_savings_vs_a0": 16.40050430762767,
+        "pct_savings_vs_a": 18.56514174598302
+      },
+      "R_100": {
+        "ratio": 100,
+        "cost_a0": 22601.777777777777,
+        "cost_a": 23116.888888888887,
+        "cost_b": 18676.0,
+        "pct_savings_vs_a0": 17.369331812640105,
+        "pct_savings_vs_a": 19.210581969892136
+      },
+      "R_250": {
+        "ratio": 250,
+        "cost_a0": 52335.11111111111,
+        "cost_a": 53383.555555555555,
+        "cost_b": 42875.99999999999,
+        "pct_savings_vs_a0": 18.074120624352474,
+        "pct_savings_vs_a": 19.683131717632573
+      },
+      "R_500": {
+        "ratio": 500,
+        "cost_a0": 101890.66666666667,
+        "cost_a": 103828.0,
+        "cost_b": 83209.33333333333,
+        "pct_savings_vs_a0": 18.334685545290384,
+        "pct_savings_vs_a": 19.858483902864997
+      },
+      "R_1000": {
+        "ratio": 1000,
+        "cost_a0": 201001.77777777778,
+        "cost_a": 204716.8888888889,
+        "cost_b": 163875.99999999997,
+        "pct_savings_vs_a0": 18.470372843579067,
+        "pct_savings_vs_a": 19.949936280565268
+      }
+    }
+  }
+]

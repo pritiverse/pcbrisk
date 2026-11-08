@@ -1,0 +1,265 @@
+cfg,seed,policy,method,alpha,board,n_gt,n_miss,flagged,n_img,tp
+synth1,42,A0 raw conf,pooled,0.05,group44000,280,32,269,100,251
+synth1,42,A0 raw conf,worst-board,0.05,group44000,280,17,326,100,282
+synth1,42,A0 raw conf,board-median,0.05,group44000,280,22,305,100,268
+synth1,42,A0 raw conf,shift-inflated,0.05,group44000,280,32,269,100,251
+synth1,42,A0 raw conf,pooled,0.1,group44000,280,62,225,100,218
+synth1,42,A0 raw conf,worst-board,0.1,group44000,280,53,236,100,227
+synth1,42,A0 raw conf,board-median,0.1,group44000,280,62,225,100,218
+synth1,42,A0 raw conf,shift-inflated,0.1,group44000,280,61,227,100,219
+synth1,42,A image-only,pooled,0.05,group44000,280,32,272,100,252
+synth1,42,A image-only,worst-board,0.05,group44000,280,18,321,100,281
+synth1,42,A image-only,board-median,0.05,group44000,280,22,299,100,267
+synth1,42,A image-only,shift-inflated,0.05,group44000,280,32,272,100,252
+synth1,42,A image-only,pooled,0.1,group44000,280,57,230,100,223
+synth1,42,A image-only,worst-board,0.1,group44000,280,52,237,100,228
+synth1,42,A image-only,board-median,0.1,group44000,280,56,231,100,224
+synth1,42,A image-only,shift-inflated,0.1,group44000,280,57,230,100,223
+synth1,42,B +graph (template),pooled,0.05,group44000,280,29,287,100,266
+synth1,42,B +graph (template),worst-board,0.05,group44000,280,25,330,100,283
+synth1,42,B +graph (template),board-median,0.05,group44000,280,25,330,100,283
+synth1,42,B +graph (template),shift-inflated,0.05,group44000,280,29,287,100,266
+synth1,42,B +graph (template),pooled,0.1,group44000,280,40,261,100,249
+synth1,42,B +graph (template),worst-board,0.1,group44000,280,36,270,100,255
+synth1,42,B +graph (template),board-median,0.1,group44000,280,38,265,100,252
+synth1,42,B +graph (template),shift-inflated,0.1,group44000,280,38,266,100,253
+synth1,42,A0 raw conf,pooled,0.05,group50600,155,9,374,79,146
+synth1,42,A0 raw conf,worst-board,0.05,group50600,155,8,540,79,147
+synth1,42,A0 raw conf,board-median,0.05,group50600,155,9,403,79,146
+synth1,42,A0 raw conf,shift-inflated,0.05,group50600,155,9,374,79,146
+synth1,42,A0 raw conf,pooled,0.1,group50600,155,15,241,79,140
+synth1,42,A0 raw conf,worst-board,0.1,group50600,155,13,280,79,142
+synth1,42,A0 raw conf,board-median,0.1,group50600,155,16,232,79,139
+synth1,42,A0 raw conf,shift-inflated,0.1,group50600,155,15,248,79,140
+synth1,42,A image-only,pooled,0.05,group50600,155,10,395,79,145
+synth1,42,A image-only,worst-board,0.05,group50600,155,9,460,79,146
+synth1,42,A image-only,board-median,0.05,group50600,155,9,426,79,146
+synth1,42,A image-only,shift-inflated,0.05,group50600,155,10,395,79,145
+synth1,42,A image-only,pooled,0.1,group50600,155,15,276,79,140
+synth1,42,A image-only,worst-board,0.1,group50600,155,13,305,79,142
+synth1,42,A image-only,board-median,0.1,group50600,155,15,275,79,140
+synth1,42,A image-only,shift-inflated,0.1,group50600,155,15,279,79,140
+synth1,42,B +graph (template),pooled,0.05,group50600,155,8,221,79,148
+synth1,42,B +graph (template),worst-board,0.05,group50600,155,8,250,79,152
+synth1,42,B +graph (template),board-median,0.05,group50600,155,8,222,79,148
+synth1,42,B +graph (template),shift-inflated,0.05,group50600,155,8,222,79,148
+synth1,42,B +graph (template),pooled,0.1,group50600,155,8,180,79,147
+synth1,42,B +graph (template),worst-board,0.1,group50600,155,8,186,79,147
+synth1,42,B +graph (template),board-median,0.1,group50600,155,8,181,79,147
+synth1,42,B +graph (template),shift-inflated,0.1,group50600,155,8,180,79,147
+synth1,42,A0 raw conf,pooled,0.05,group00041,516,9,758,221,512
+synth1,42,A0 raw conf,worst-board,0.05,group00041,516,7,1016,221,519
+synth1,42,A0 raw conf,board-median,0.05,group00041,516,15,590,221,501
+synth1,42,A0 raw conf,shift-inflated,0.05,group00041,516,9,758,221,512
+synth1,42,A0 raw conf,pooled,0.1,group00041,516,29,513,221,487
+synth1,42,A0 raw conf,worst-board,0.1,group00041,516,23,537,221,493
+synth1,42,A0 raw conf,board-median,0.1,group00041,516,36,492,221,480
+synth1,42,A0 raw conf,shift-inflated,0.1,group00041,516,29,513,221,487
+synth1,42,A image-only,pooled,0.05,group00041,516,9,734,221,511
+synth1,42,A image-only,worst-board,0.05,group00041,516,7,1331,221,521
+synth1,42,A image-only,board-median,0.05,group00041,516,16,587,221,500
+synth1,42,A image-only,shift-inflated,0.05,group00041,516,9,734,221,511
+synth1,42,A image-only,pooled,0.1,group00041,516,29,514,221,487
+synth1,42,A image-only,worst-board,0.1,group00041,516,22,538,221,494
+synth1,42,A image-only,board-median,0.1,group00041,516,36,492,221,480
+synth1,42,A image-only,shift-inflated,0.1,group00041,516,29,514,221,487
+synth1,42,B +graph (template),pooled,0.05,group00041,516,15,565,221,515
+synth1,42,B +graph (template),worst-board,0.05,group00041,516,6,784,221,530
+synth1,42,B +graph (template),board-median,0.05,group00041,516,21,533,221,503
+synth1,42,B +graph (template),shift-inflated,0.05,group00041,516,15,565,221,515
+synth1,42,B +graph (template),pooled,0.1,group00041,516,41,496,221,479
+synth1,42,B +graph (template),worst-board,0.1,group00041,516,35,503,221,486
+synth1,42,B +graph (template),board-median,0.1,group00041,516,40,497,221,480
+synth1,42,B +graph (template),shift-inflated,0.1,group00041,516,41,496,221,479
+synth1,42,A0 raw conf,pooled,0.05,group92000,233,7,293,120,241
+synth1,42,A0 raw conf,worst-board,0.05,group92000,233,1,407,120,278
+synth1,42,A0 raw conf,board-median,0.05,group92000,233,11,243,120,223
+synth1,42,A0 raw conf,shift-inflated,0.05,group92000,233,4,334,120,258
+synth1,42,A0 raw conf,pooled,0.1,group92000,233,14,233,120,219
+synth1,42,A0 raw conf,worst-board,0.1,group92000,233,11,243,120,223
+synth1,42,A0 raw conf,board-median,0.1,group92000,233,18,225,120,215
+synth1,42,A0 raw conf,shift-inflated,0.1,group92000,233,14,233,120,219
+synth1,42,A image-only,pooled,0.05,group92000,233,6,303,120,248
+synth1,42,A image-only,worst-board,0.05,group92000,233,1,408,120,280
+synth1,42,A image-only,board-median,0.05,group92000,233,11,243,120,223
+synth1,42,A image-only,shift-inflated,0.05,group92000,233,4,333,120,258
+synth1,42,A image-only,pooled,0.1,group92000,233,14,233,120,219
+synth1,42,A image-only,worst-board,0.1,group92000,233,11,243,120,223
+synth1,42,A image-only,board-median,0.1,group92000,233,18,225,120,215
+synth1,42,A image-only,shift-inflated,0.1,group92000,233,14,233,120,219
+synth1,42,B +graph (template),pooled,0.05,group92000,233,5,270,120,243
+synth1,42,B +graph (template),worst-board,0.05,group92000,233,1,386,120,276
+synth1,42,B +graph (template),board-median,0.05,group92000,233,15,233,120,226
+synth1,42,B +graph (template),shift-inflated,0.05,group92000,233,5,270,120,243
+synth1,42,B +graph (template),pooled,0.1,group92000,233,21,221,120,215
+synth1,42,B +graph (template),worst-board,0.1,group92000,233,16,229,120,222
+synth1,42,B +graph (template),board-median,0.1,group92000,233,24,218,120,212
+synth1,42,B +graph (template),shift-inflated,0.1,group92000,233,21,221,120,215
+synth1,42,A0 raw conf,pooled,0.05,group12300,217,4,274,98,215
+synth1,42,A0 raw conf,worst-board,0.05,group12300,217,3,382,98,219
+synth1,42,A0 raw conf,board-median,0.05,group12300,217,16,210,98,201
+synth1,42,A0 raw conf,shift-inflated,0.05,group12300,217,3,338,98,219
+synth1,42,A0 raw conf,pooled,0.1,group12300,217,14,213,98,203
+synth1,42,A0 raw conf,worst-board,0.1,group12300,217,10,230,98,207
+synth1,42,A0 raw conf,board-median,0.1,group12300,217,41,180,98,176
+synth1,42,A0 raw conf,shift-inflated,0.1,group12300,217,12,216,98,205
+synth1,42,A image-only,pooled,0.05,group12300,217,4,274,98,215
+synth1,42,A image-only,worst-board,0.05,group12300,217,3,361,98,219
+synth1,42,A image-only,board-median,0.05,group12300,217,21,205,98,196
+synth1,42,A image-only,shift-inflated,0.05,group12300,217,3,341,98,219
+synth1,42,A image-only,pooled,0.1,group12300,217,14,214,98,203
+synth1,42,A image-only,worst-board,0.1,group12300,217,9,232,98,208
+synth1,42,A image-only,board-median,0.1,group12300,217,39,182,98,178
+synth1,42,A image-only,shift-inflated,0.1,group12300,217,14,214,98,203
+synth1,42,B +graph (template),pooled,0.05,group12300,217,5,252,98,231
+synth1,42,B +graph (template),worst-board,0.05,group12300,217,3,331,98,239
+synth1,42,B +graph (template),board-median,0.05,group12300,217,12,233,98,216
+synth1,42,B +graph (template),shift-inflated,0.05,group12300,217,5,252,98,231
+synth1,42,B +graph (template),pooled,0.1,group12300,217,23,208,98,196
+synth1,42,B +graph (template),worst-board,0.1,group12300,217,13,232,98,215
+synth1,42,B +graph (template),board-median,0.1,group12300,217,20,212,98,200
+synth1,42,B +graph (template),shift-inflated,0.1,group12300,217,23,208,98,196
+synth1,42,A0 raw conf,pooled,0.05,group20085,982,59,1524,325,938
+synth1,42,A0 raw conf,worst-board,0.05,group20085,982,42,5215,325,1001
+synth1,42,A0 raw conf,board-median,0.05,group20085,982,144,931,325,837
+synth1,42,A0 raw conf,shift-inflated,0.05,group20085,982,42,5215,325,1001
+synth1,42,A0 raw conf,pooled,0.1,group20085,982,143,936,325,838
+synth1,42,A0 raw conf,worst-board,0.1,group20085,982,42,5215,325,1001
+synth1,42,A0 raw conf,board-median,0.1,group20085,982,204,811,325,777
+synth1,42,A0 raw conf,shift-inflated,0.1,group20085,982,73,1277,325,916
+synth1,42,A image-only,pooled,0.05,group20085,982,58,1562,325,937
+synth1,42,A image-only,worst-board,0.05,group20085,982,42,5215,325,1001
+synth1,42,A image-only,board-median,0.05,group20085,982,146,924,325,835
+synth1,42,A image-only,shift-inflated,0.05,group20085,982,42,5215,325,1001
+synth1,42,A image-only,pooled,0.1,group20085,982,133,950,325,848
+synth1,42,A image-only,worst-board,0.1,group20085,982,42,5215,325,1001
+synth1,42,A image-only,board-median,0.1,group20085,982,198,815,325,783
+synth1,42,A image-only,shift-inflated,0.1,group20085,982,72,1279,325,917
+synth1,42,B +graph (template),pooled,0.05,group20085,982,60,1111,325,969
+synth1,42,B +graph (template),worst-board,0.05,group20085,982,42,5215,325,1001
+synth1,42,B +graph (template),board-median,0.05,group20085,982,97,968,325,905
+synth1,42,B +graph (template),shift-inflated,0.05,group20085,982,42,5215,325,1001
+synth1,42,B +graph (template),pooled,0.1,group20085,982,108,944,325,892
+synth1,42,B +graph (template),worst-board,0.1,group20085,982,42,5215,325,1001
+synth1,42,B +graph (template),board-median,0.1,group20085,982,114,916,325,880
+synth1,42,B +graph (template),shift-inflated,0.1,group20085,982,104,958,325,897
+synth1,42,A0 raw conf,pooled,0.05,group12100,309,3,1602,146,319
+synth1,42,A0 raw conf,worst-board,0.05,group12100,309,3,1602,146,319
+synth1,42,A0 raw conf,board-median,0.05,group12100,309,6,351,146,309
+synth1,42,A0 raw conf,shift-inflated,0.05,group12100,309,3,1602,146,319
+synth1,42,A0 raw conf,pooled,0.1,group12100,309,8,312,146,302
+synth1,42,A0 raw conf,worst-board,0.1,group12100,309,3,1602,146,319
+synth1,42,A0 raw conf,board-median,0.1,group12100,309,15,299,146,294
+synth1,42,A0 raw conf,shift-inflated,0.1,group12100,309,5,467,146,312
+synth1,42,A image-only,pooled,0.05,group12100,309,5,565,146,316
+synth1,42,A image-only,worst-board,0.05,group12100,309,3,1602,146,319
+synth1,42,A image-only,board-median,0.05,group12100,309,6,349,146,310
+synth1,42,A image-only,shift-inflated,0.05,group12100,309,3,1602,146,319
+synth1,42,A image-only,pooled,0.1,group12100,309,8,315,146,304
+synth1,42,A image-only,worst-board,0.1,group12100,309,3,1602,146,319
+synth1,42,A image-only,board-median,0.1,group12100,309,18,297,146,291
+synth1,42,A image-only,shift-inflated,0.1,group12100,309,5,565,146,316
+synth1,42,B +graph (template),pooled,0.05,group12100,309,5,335,146,314
+synth1,42,B +graph (template),worst-board,0.05,group12100,309,3,1602,146,319
+synth1,42,B +graph (template),board-median,0.05,group12100,309,6,323,146,311
+synth1,42,B +graph (template),shift-inflated,0.05,group12100,309,3,1602,146,319
+synth1,42,B +graph (template),pooled,0.1,group12100,309,19,301,146,294
+synth1,42,B +graph (template),worst-board,0.1,group12100,309,3,1602,146,319
+synth1,42,B +graph (template),board-median,0.1,group12100,309,34,280,146,279
+synth1,42,B +graph (template),shift-inflated,0.1,group12100,309,9,314,146,306
+synth1,42,A0 raw conf,pooled,0.05,group13000,352,2,2163,216,369
+synth1,42,A0 raw conf,worst-board,0.05,group13000,352,2,2163,216,369
+synth1,42,A0 raw conf,board-median,0.05,group13000,352,3,524,216,360
+synth1,42,A0 raw conf,shift-inflated,0.05,group13000,352,2,2163,216,369
+synth1,42,A0 raw conf,pooled,0.1,group13000,352,3,522,216,360
+synth1,42,A0 raw conf,worst-board,0.1,group13000,352,2,2163,216,369
+synth1,42,A0 raw conf,board-median,0.1,group13000,352,5,373,216,348
+synth1,42,A0 raw conf,shift-inflated,0.1,group13000,352,2,538,216,361
+synth1,42,A image-only,pooled,0.05,group13000,352,2,2163,216,369
+synth1,42,A image-only,worst-board,0.05,group13000,352,2,2163,216,369
+synth1,42,A image-only,board-median,0.05,group13000,352,3,520,216,361
+synth1,42,A image-only,shift-inflated,0.05,group13000,352,2,2163,216,369
+synth1,42,A image-only,pooled,0.1,group13000,352,3,534,216,362
+synth1,42,A image-only,worst-board,0.1,group13000,352,2,2163,216,369
+synth1,42,A image-only,board-median,0.1,group13000,352,5,372,216,348
+synth1,42,A image-only,shift-inflated,0.1,group13000,352,3,555,216,363
+synth1,42,B +graph (template),pooled,0.05,group13000,352,2,2163,216,369
+synth1,42,B +graph (template),worst-board,0.05,group13000,352,2,2163,216,369
+synth1,42,B +graph (template),board-median,0.05,group13000,352,3,414,216,364
+synth1,42,B +graph (template),shift-inflated,0.05,group13000,352,2,2163,216,369
+synth1,42,B +graph (template),pooled,0.1,group13000,352,5,404,216,362
+synth1,42,B +graph (template),worst-board,0.1,group13000,352,2,2163,216,369
+synth1,42,B +graph (template),board-median,0.1,group13000,352,6,373,216,352
+synth1,42,B +graph (template),shift-inflated,0.1,group13000,352,5,404,216,362
+synth1,42,A0 raw conf,pooled,0.05,group90100,197,30,532,74,184
+synth1,42,A0 raw conf,worst-board,0.05,group90100,197,30,557,74,184
+synth1,42,A0 raw conf,board-median,0.05,group90100,197,33,498,74,179
+synth1,42,A0 raw conf,shift-inflated,0.05,group90100,197,30,532,74,184
+synth1,42,A0 raw conf,pooled,0.1,group90100,197,51,175,74,151
+synth1,42,A0 raw conf,worst-board,0.1,group90100,197,51,178,74,151
+synth1,42,A0 raw conf,board-median,0.1,group90100,197,51,178,74,151
+synth1,42,A0 raw conf,shift-inflated,0.1,group90100,197,51,175,74,151
+synth1,42,A image-only,pooled,0.05,group90100,197,33,380,74,181
+synth1,42,A image-only,worst-board,0.05,group90100,197,32,402,74,183
+synth1,42,A image-only,board-median,0.05,group90100,197,32,389,74,182
+synth1,42,A image-only,shift-inflated,0.05,group90100,197,33,380,74,181
+synth1,42,A image-only,pooled,0.1,group90100,197,52,171,74,150
+synth1,42,A image-only,worst-board,0.1,group90100,197,52,173,74,150
+synth1,42,A image-only,board-median,0.1,group90100,197,52,173,74,150
+synth1,42,A image-only,shift-inflated,0.1,group90100,197,52,171,74,150
+synth1,42,B +graph (template),pooled,0.05,group90100,197,26,278,74,198
+synth1,42,B +graph (template),worst-board,0.05,group90100,197,26,280,74,198
+synth1,42,B +graph (template),board-median,0.05,group90100,197,26,280,74,198
+synth1,42,B +graph (template),shift-inflated,0.05,group90100,197,26,278,74,198
+synth1,42,B +graph (template),pooled,0.1,group90100,197,42,197,74,168
+synth1,42,B +graph (template),worst-board,0.1,group90100,197,36,228,74,176
+synth1,42,B +graph (template),board-median,0.1,group90100,197,42,198,74,168
+synth1,42,B +graph (template),shift-inflated,0.1,group90100,197,42,197,74,168
+synth1,42,A0 raw conf,pooled,0.05,group12000,42,1,82,14,42
+synth1,42,A0 raw conf,worst-board,0.05,group12000,42,1,95,14,42
+synth1,42,A0 raw conf,board-median,0.05,group12000,42,1,89,14,42
+synth1,42,A0 raw conf,shift-inflated,0.05,group12000,42,1,82,14,42
+synth1,42,A0 raw conf,pooled,0.1,group12000,42,2,43,14,40
+synth1,42,A0 raw conf,worst-board,0.1,group12000,42,2,44,14,40
+synth1,42,A0 raw conf,board-median,0.1,group12000,42,2,44,14,40
+synth1,42,A0 raw conf,shift-inflated,0.1,group12000,42,2,44,14,40
+synth1,42,A image-only,pooled,0.05,group12000,42,2,69,14,40
+synth1,42,A image-only,worst-board,0.05,group12000,42,1,84,14,41
+synth1,42,A image-only,board-median,0.05,group12000,42,1,76,14,41
+synth1,42,A image-only,shift-inflated,0.05,group12000,42,2,69,14,40
+synth1,42,A image-only,pooled,0.1,group12000,42,2,43,14,40
+synth1,42,A image-only,worst-board,0.1,group12000,42,2,46,14,40
+synth1,42,A image-only,board-median,0.1,group12000,42,2,46,14,40
+synth1,42,A image-only,shift-inflated,0.1,group12000,42,2,45,14,40
+synth1,42,B +graph (template),pooled,0.05,group12000,42,1,49,14,44
+synth1,42,B +graph (template),worst-board,0.05,group12000,42,1,49,14,44
+synth1,42,B +graph (template),board-median,0.05,group12000,42,1,49,14,44
+synth1,42,B +graph (template),shift-inflated,0.05,group12000,42,1,49,14,44
+synth1,42,B +graph (template),pooled,0.1,group12000,42,3,39,14,39
+synth1,42,B +graph (template),worst-board,0.1,group12000,42,2,41,14,41
+synth1,42,B +graph (template),board-median,0.1,group12000,42,3,39,14,39
+synth1,42,B +graph (template),shift-inflated,0.1,group12000,42,3,39,14,39
+synth1,42,A0 raw conf,pooled,0.05,group77000,165,13,189,107,159
+synth1,42,A0 raw conf,worst-board,0.05,group77000,165,10,281,107,171
+synth1,42,A0 raw conf,board-median,0.05,group77000,165,12,208,107,163
+synth1,42,A0 raw conf,shift-inflated,0.05,group77000,165,12,204,107,163
+synth1,42,A0 raw conf,pooled,0.1,group77000,165,30,143,107,136
+synth1,42,A0 raw conf,worst-board,0.1,group77000,165,15,173,107,154
+synth1,42,A0 raw conf,board-median,0.1,group77000,165,32,138,107,133
+synth1,42,A0 raw conf,shift-inflated,0.1,group77000,165,26,149,107,140
+synth1,42,A image-only,pooled,0.05,group77000,165,14,215,107,158
+synth1,42,A image-only,worst-board,0.05,group77000,165,7,348,107,179
+synth1,42,A image-only,board-median,0.05,group77000,165,13,252,107,163
+synth1,42,A image-only,shift-inflated,0.05,group77000,165,13,243,107,162
+synth1,42,A image-only,pooled,0.1,group77000,165,26,158,107,141
+synth1,42,A image-only,worst-board,0.1,group77000,165,17,198,107,154
+synth1,42,A image-only,board-median,0.1,group77000,165,31,147,107,135
+synth1,42,A image-only,shift-inflated,0.1,group77000,165,23,162,107,144
+synth1,42,B +graph (template),pooled,0.05,group77000,165,13,205,107,169
+synth1,42,B +graph (template),worst-board,0.05,group77000,165,7,241,107,185
+synth1,42,B +graph (template),board-median,0.05,group77000,165,13,209,107,172
+synth1,42,B +graph (template),shift-inflated,0.05,group77000,165,10,222,107,179
+synth1,42,B +graph (template),pooled,0.1,group77000,165,38,144,107,132
+synth1,42,B +graph (template),worst-board,0.1,group77000,165,17,188,107,160
+synth1,42,B +graph (template),board-median,0.1,group77000,165,41,141,107,129
+synth1,42,B +graph (template),shift-inflated,0.1,group77000,165,37,146,107,133

@@ -1,0 +1,40 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Caches and checkpoints
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+03_cache/
+
+# Large dataset archives & tarballs (>50MB / >100MB)
+00_raw/*.zip
+00_raw/*.tar
+01_prepared/*.tar
+02_synth/*.tar
+99_archive/
+*.tar
+*.tar.gz
+*.zip
+
+# PyTorch training run weights & checkpoints
+04_runs/
+*.pt
+*.pth
+*.bin
+
+# Environment & local OS files
+.env
+.venv/
+env/
+venv/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup documents
+*ORIGINAL_BACKUP.docx
+

@@ -1,0 +1,39 @@
+{
+  "hybrid_flying_probe_scheduling": [
+    {
+      "fpt_offload_share": 0.1,
+      "human_reviews_per_board": 3.7188,
+      "human_workload_reduction_pct": 10.0,
+      "fpt_tests_per_1k_boards": 413.20000000000005,
+      "estimated_fpt_time_sec_per_board": 0.06198000000000001
+    },
+    {
+      "fpt_offload_share": 0.2,
+      "human_reviews_per_board": 3.3056000000000005,
+      "human_workload_reduction_pct": 20.0,
+      "fpt_tests_per_1k_boards": 826.4000000000001,
+      "estimated_fpt_time_sec_per_board": 0.12396000000000001
+    },
+    {
+      "fpt_offload_share": 0.3,
+      "human_reviews_per_board": 2.8923999999999994,
+      "human_workload_reduction_pct": 30.0,
+      "fpt_tests_per_1k_boards": 1239.6,
+      "estimated_fpt_time_sec_per_board": 0.18593999999999997
+    },
+    {
+      "fpt_offload_share": 0.4,
+      "human_reviews_per_board": 2.4791999999999996,
+      "human_workload_reduction_pct": 40.0,
+      "fpt_tests_per_1k_boards": 1652.8000000000002,
+      "estimated_fpt_time_sec_per_board": 0.24792000000000003
+    }
+  ],
+  "vector_cad_rtree_benchmark": {
+    "cad_rtree_build_ms": 0.36619999445974827,
+    "mean_query_ms": 0.007573999522719532,
+    "median_query_ms": 0.00589998671784997,
+    "p95_query_ms": 0.012704981782007957,
+    "throughput_queries_per_sec": 132030.63942641212
+  }
+}

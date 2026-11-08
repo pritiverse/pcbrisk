@@ -1,0 +1,177 @@
+policy,method,alpha,board,n_gt,n_miss,flagged,n_img,tp
+A0 raw conf,pooled,0.05,group44000,280,39,249,100,242
+A0 raw conf,worst-board,0.05,group44000,280,13,397,100,287
+A0 raw conf,pooled,0.1,group44000,280,65,222,100,216
+A0 raw conf,worst-board,0.1,group44000,280,38,253,100,243
+A image-only,pooled,0.05,group44000,280,38,252,100,244
+A image-only,worst-board,0.05,group44000,280,11,441,100,296
+A image-only,pooled,0.1,group44000,280,63,225,100,218
+A image-only,worst-board,0.1,group44000,280,38,252,100,244
+B +graph (template),pooled,0.05,group44000,280,35,273,100,254
+B +graph (template),worst-board,0.05,group44000,280,14,343,100,293
+B +graph (template),pooled,0.1,group44000,280,47,253,100,238
+B +graph (template),worst-board,0.1,group44000,280,46,254,100,239
+C +head (reference-free),pooled,0.05,group44000,280,41,251,100,243
+C +head (reference-free),worst-board,0.05,group44000,280,9,674,100,321
+C +head (reference-free),pooled,0.1,group44000,280,89,197,100,193
+C +head (reference-free),worst-board,0.1,group44000,280,32,270,100,253
+A0 raw conf,pooled,0.05,group50600,155,15,262,79,140
+A0 raw conf,worst-board,0.05,group50600,155,10,314,79,145
+A0 raw conf,pooled,0.1,group50600,155,20,198,79,135
+A0 raw conf,worst-board,0.1,group50600,155,17,234,79,138
+A image-only,pooled,0.05,group50600,155,15,302,79,140
+A image-only,worst-board,0.05,group50600,155,10,358,79,145
+A image-only,pooled,0.1,group50600,155,32,222,79,123
+A image-only,worst-board,0.1,group50600,155,16,292,79,139
+B +graph (template),pooled,0.05,group50600,155,10,198,79,146
+B +graph (template),worst-board,0.05,group50600,155,9,203,79,147
+B +graph (template),pooled,0.1,group50600,155,13,168,79,142
+B +graph (template),worst-board,0.1,group50600,155,11,185,79,144
+C +head (reference-free),pooled,0.05,group50600,155,20,239,79,135
+C +head (reference-free),worst-board,0.05,group50600,155,13,324,79,142
+C +head (reference-free),pooled,0.1,group50600,155,33,176,79,122
+C +head (reference-free),worst-board,0.1,group50600,155,20,239,79,135
+A0 raw conf,pooled,0.05,group00041,516,11,613,221,505
+A0 raw conf,worst-board,0.05,group00041,516,6,3134,221,527
+A0 raw conf,pooled,0.1,group00041,516,19,516,221,497
+A0 raw conf,worst-board,0.1,group00041,516,16,528,221,500
+A image-only,pooled,0.05,group00041,516,11,628,221,505
+A image-only,worst-board,0.05,group00041,516,6,1484,221,522
+A image-only,pooled,0.1,group00041,516,18,519,221,498
+A image-only,worst-board,0.1,group00041,516,16,533,221,500
+B +graph (template),pooled,0.05,group00041,516,12,545,221,510
+B +graph (template),worst-board,0.05,group00041,516,6,758,221,524
+B +graph (template),pooled,0.1,group00041,516,45,479,221,471
+B +graph (template),worst-board,0.1,group00041,516,36,489,221,480
+C +head (reference-free),pooled,0.05,group00041,516,6,851,221,520
+C +head (reference-free),worst-board,0.05,group00041,516,6,1253,221,527
+C +head (reference-free),pooled,0.1,group00041,516,16,538,221,500
+C +head (reference-free),worst-board,0.1,group00041,516,14,577,221,502
+A0 raw conf,pooled,0.05,group92000,233,1,257,120,238
+A0 raw conf,worst-board,0.05,group92000,233,1,1242,120,265
+A0 raw conf,pooled,0.1,group92000,233,5,234,120,228
+A0 raw conf,worst-board,0.1,group92000,233,5,237,120,229
+A image-only,pooled,0.05,group92000,233,1,257,120,238
+A image-only,worst-board,0.05,group92000,233,1,429,120,260
+A image-only,pooled,0.1,group92000,233,5,235,120,229
+A image-only,worst-board,0.1,group92000,233,5,237,120,229
+B +graph (template),pooled,0.05,group92000,233,2,252,120,240
+B +graph (template),worst-board,0.05,group92000,233,1,316,120,255
+B +graph (template),pooled,0.1,group92000,233,20,220,120,216
+B +graph (template),worst-board,0.1,group92000,233,9,233,120,228
+C +head (reference-free),pooled,0.05,group92000,233,1,253,120,240
+C +head (reference-free),worst-board,0.05,group92000,233,1,282,120,249
+C +head (reference-free),pooled,0.1,group92000,233,5,234,120,228
+C +head (reference-free),worst-board,0.1,group92000,233,4,238,120,230
+A0 raw conf,pooled,0.05,group12300,217,3,259,98,214
+A0 raw conf,worst-board,0.05,group12300,217,0,933,98,235
+A0 raw conf,pooled,0.1,group12300,217,14,218,98,203
+A0 raw conf,worst-board,0.1,group12300,217,7,231,98,210
+A image-only,pooled,0.05,group12300,217,3,261,98,215
+A image-only,worst-board,0.05,group12300,217,0,368,98,225
+A image-only,pooled,0.1,group12300,217,13,219,98,204
+A image-only,worst-board,0.1,group12300,217,7,232,98,210
+B +graph (template),pooled,0.05,group12300,217,3,234,98,222
+B +graph (template),worst-board,0.05,group12300,217,0,316,98,235
+B +graph (template),pooled,0.1,group12300,217,13,208,98,204
+B +graph (template),worst-board,0.1,group12300,217,8,214,98,209
+C +head (reference-free),pooled,0.05,group12300,217,3,259,98,215
+C +head (reference-free),worst-board,0.05,group12300,217,1,337,98,225
+C +head (reference-free),pooled,0.1,group12300,217,22,210,98,195
+C +head (reference-free),worst-board,0.1,group12300,217,9,231,98,208
+A0 raw conf,pooled,0.05,group20085,982,43,5361,325,1020
+A0 raw conf,worst-board,0.05,group20085,982,43,5361,325,1020
+A0 raw conf,pooled,0.1,group20085,982,134,929,325,847
+A0 raw conf,worst-board,0.1,group20085,982,43,5361,325,1020
+A image-only,pooled,0.05,group20085,982,48,2413,325,988
+A image-only,worst-board,0.05,group20085,982,43,5361,325,1020
+A image-only,pooled,0.1,group20085,982,134,926,325,847
+A image-only,worst-board,0.1,group20085,982,43,5361,325,1020
+B +graph (template),pooled,0.05,group20085,982,50,1410,325,1008
+B +graph (template),worst-board,0.05,group20085,982,43,5361,325,1020
+B +graph (template),pooled,0.1,group20085,982,102,924,325,889
+B +graph (template),worst-board,0.1,group20085,982,43,5361,325,1020
+C +head (reference-free),pooled,0.05,group20085,982,46,2484,325,1002
+C +head (reference-free),worst-board,0.05,group20085,982,43,5361,325,1020
+C +head (reference-free),pooled,0.1,group20085,982,154,899,325,827
+C +head (reference-free),worst-board,0.1,group20085,982,43,5361,325,1020
+A0 raw conf,pooled,0.05,group12100,309,4,1396,146,314
+A0 raw conf,worst-board,0.05,group12100,309,4,1396,146,314
+A0 raw conf,pooled,0.1,group12100,309,12,310,146,297
+A0 raw conf,worst-board,0.1,group12100,309,4,1396,146,314
+A image-only,pooled,0.05,group12100,309,4,1396,146,314
+A image-only,worst-board,0.05,group12100,309,4,1396,146,314
+A image-only,pooled,0.1,group12100,309,12,311,146,297
+A image-only,worst-board,0.1,group12100,309,4,1396,146,314
+B +graph (template),pooled,0.05,group12100,309,4,1396,146,314
+B +graph (template),worst-board,0.05,group12100,309,4,1396,146,314
+B +graph (template),pooled,0.1,group12100,309,12,302,146,297
+B +graph (template),worst-board,0.1,group12100,309,4,1396,146,314
+C +head (reference-free),pooled,0.05,group12100,309,4,1396,146,314
+C +head (reference-free),worst-board,0.05,group12100,309,4,1396,146,314
+C +head (reference-free),pooled,0.1,group12100,309,10,312,146,299
+C +head (reference-free),worst-board,0.1,group12100,309,4,1396,146,314
+A0 raw conf,pooled,0.05,group13000,352,2,2443,216,371
+A0 raw conf,worst-board,0.05,group13000,352,2,2443,216,371
+A0 raw conf,pooled,0.1,group13000,352,2,564,216,357
+A0 raw conf,worst-board,0.1,group13000,352,2,2443,216,371
+A image-only,pooled,0.05,group13000,352,2,2443,216,371
+A image-only,worst-board,0.05,group13000,352,2,2443,216,371
+A image-only,pooled,0.1,group13000,352,2,607,216,361
+A image-only,worst-board,0.1,group13000,352,2,2443,216,371
+B +graph (template),pooled,0.05,group13000,352,2,2443,216,371
+B +graph (template),worst-board,0.05,group13000,352,2,2443,216,371
+B +graph (template),pooled,0.1,group13000,352,2,457,216,366
+B +graph (template),worst-board,0.1,group13000,352,2,2443,216,371
+C +head (reference-free),pooled,0.05,group13000,352,2,2443,216,371
+C +head (reference-free),worst-board,0.05,group13000,352,2,2443,216,371
+C +head (reference-free),pooled,0.1,group13000,352,2,726,216,367
+C +head (reference-free),worst-board,0.1,group13000,352,2,2443,216,371
+A0 raw conf,pooled,0.05,group90100,197,33,436,74,171
+A0 raw conf,worst-board,0.05,group90100,197,33,549,74,174
+A0 raw conf,pooled,0.1,group90100,197,49,187,74,152
+A0 raw conf,worst-board,0.1,group90100,197,48,192,74,153
+A image-only,pooled,0.05,group90100,197,34,317,74,169
+A image-only,worst-board,0.05,group90100,197,33,347,74,172
+A image-only,pooled,0.1,group90100,197,51,181,74,150
+A image-only,worst-board,0.1,group90100,197,49,185,74,152
+B +graph (template),pooled,0.05,group90100,197,34,261,74,181
+B +graph (template),worst-board,0.05,group90100,197,34,283,74,184
+B +graph (template),pooled,0.1,group90100,197,41,189,74,162
+B +graph (template),worst-board,0.1,group90100,197,40,197,74,165
+C +head (reference-free),pooled,0.05,group90100,197,36,646,74,176
+C +head (reference-free),worst-board,0.05,group90100,197,35,836,74,178
+C +head (reference-free),pooled,0.1,group90100,197,51,191,74,150
+C +head (reference-free),worst-board,0.1,group90100,197,49,198,74,153
+A0 raw conf,pooled,0.05,group12000,42,1,93,14,41
+A0 raw conf,worst-board,0.05,group12000,42,1,117,14,41
+A0 raw conf,pooled,0.1,group12000,42,3,41,14,39
+A0 raw conf,worst-board,0.1,group12000,42,3,45,14,39
+A image-only,pooled,0.05,group12000,42,3,69,14,39
+A image-only,worst-board,0.05,group12000,42,1,102,14,41
+A image-only,pooled,0.1,group12000,42,4,40,14,38
+A image-only,worst-board,0.1,group12000,42,3,41,14,39
+B +graph (template),pooled,0.05,group12000,42,1,50,14,43
+B +graph (template),worst-board,0.05,group12000,42,1,50,14,43
+B +graph (template),pooled,0.1,group12000,42,4,41,14,39
+B +graph (template),worst-board,0.1,group12000,42,2,46,14,42
+C +head (reference-free),pooled,0.05,group12000,42,1,164,14,43
+C +head (reference-free),worst-board,0.05,group12000,42,1,261,14,43
+C +head (reference-free),pooled,0.1,group12000,42,3,44,14,39
+C +head (reference-free),worst-board,0.1,group12000,42,3,46,14,39
+A0 raw conf,pooled,0.05,group77000,165,13,176,107,157
+A0 raw conf,worst-board,0.05,group77000,165,5,297,107,176
+A0 raw conf,pooled,0.1,group77000,165,23,153,107,144
+A0 raw conf,worst-board,0.1,group77000,165,19,164,107,148
+A image-only,pooled,0.05,group77000,165,14,211,107,156
+A image-only,worst-board,0.05,group77000,165,6,411,107,187
+A image-only,pooled,0.1,group77000,165,21,159,107,146
+A image-only,worst-board,0.1,group77000,165,15,193,107,155
+B +graph (template),pooled,0.05,group77000,165,16,188,107,160
+B +graph (template),worst-board,0.05,group77000,165,11,218,107,169
+B +graph (template),pooled,0.1,group77000,165,31,153,107,138
+B +graph (template),worst-board,0.1,group77000,165,18,179,107,155
+C +head (reference-free),pooled,0.05,group77000,165,12,228,107,165
+C +head (reference-free),worst-board,0.05,group77000,165,5,661,107,188
+C +head (reference-free),pooled,0.1,group77000,165,21,167,107,148
+C +head (reference-free),worst-board,0.1,group77000,165,15,189,107,157

@@ -1,0 +1,23 @@
+{
+  "alpha_target": 0.05,
+  "sample_counts": {
+    "opens_class_0": 1942,
+    "shorts_class_1": 1506,
+    "total_critical": 3448
+  },
+  "global_calibration": {
+    "tau_global": 1.3195286648076292,
+    "overall_miss_rate": 0.04814385150812065,
+    "open_miss_rate": 0.052008238928939236,
+    "short_miss_rate": 0.04316069057104914,
+    "group_disparity": 0.008847548357890096
+  },
+  "mondrian_group_conditional_calibration": {
+    "tau_open": 1.2424533248940002,
+    "tau_short": 1.4451858789480823,
+    "overall_miss_rate": 0.048723897911832945,
+    "open_miss_rate": 0.04840370751802266,
+    "short_miss_rate": 0.049136786188579015,
+    "group_disparity": 0.0007330786705563586
+  }
+}
